@@ -1,4 +1,6 @@
-secretNumber = 5
+from random import randint
+
+secretNumber = randint(1, 10)
 
 print("I am thinking of a number between 1 and 10.")
 
