@@ -16,7 +16,14 @@ def guess():
 guess()
 
 while guessVal != secretNumber:
-    print("Nope, try again.")
-    guess()
+    if guessVal < secretNumber:
+        print("Too low!")
+        guess()
+    elif guessVal > secretNumber:
+        print("Too high!")
+        guess()
+    else:
+        print("You shouldn't see this!")
+        quit(3)
 
 print("You got it!")
