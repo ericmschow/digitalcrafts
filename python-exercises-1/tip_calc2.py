@@ -1,4 +1,18 @@
-bill = float(input("What is the total bill amount? Please omit the dollar sign. "))
+raw_bill = input("What is the total bill amount? Please omit the dollar sign. ")
+
+def sanitize():
+    global bill
+    try:
+        bill = float(raw_bill)
+        return True
+    except ValueError:
+        print("Please enter just the number, with no special characters.")
+        quit(1)
+
+
+if sanitize():
+    bill = float(raw_bill)
+
 rawServiceLevel = input("How did they do? Good, fair, or bad? ")
 partySize = int(input("How many people are in your party? "))
 
@@ -18,5 +32,7 @@ def tipCalc():
     print("And the total bill is ${}.".format(total))
     print("Each person owes ${}".format(share))
 
-
-tipCalc()
+if bill >= 0:
+    tipCalc()
+else:
+    print("Please enter a positive number.")
