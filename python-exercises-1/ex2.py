@@ -1,3 +1,5 @@
-name = input("What is your name? ").upper()
-print("Hello, " + name).upper()
-print("Your name has " + name.len() + "characters in it!").upper()
+name = input("WHAT IS YOUR NAME? ")
+name = name.upper()
+print("HELLO, " + name + "!")
+chars = len(name)
+print("YOUR NAME HAS " + str(chars) + " CHARACTERS IN IT!")
