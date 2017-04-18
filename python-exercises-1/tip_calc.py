@@ -27,9 +27,9 @@ tipAmount = {
 
 def tipCalc():
     tip = bill * tipAmount[serviceLevel]
-    total = bill * tip
-    print("The tip amount is ${}.".format(tip))
-    print("And the total bill is ${}.".format(total))
+    total = bill + tip
+    print("The tip amount is ${:.2f}.".format(tip))
+    print("And the total bill is ${:.2f}.".format(total))
 
 
 if bill >= 0:

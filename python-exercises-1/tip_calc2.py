@@ -28,9 +28,9 @@ def tipCalc():
     tip = bill * tipAmount[serviceLevel]
     total = bill + tip
     share = total / partySize
-    print("The tip amount is ${}.".format(tip))
-    print("And the total bill is ${}.".format(total))
-    print("Each person owes ${}".format(share))
+    print("The tip amount is ${:.2f}.".format(tip))
+    print("And the total bill is ${:.2f}.".format(total))
+    print("Each person owes ${:.2f}".format(share))
 
 if bill >= 0:
     tipCalc()
