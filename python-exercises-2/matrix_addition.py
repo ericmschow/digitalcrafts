@@ -10,7 +10,9 @@ matrixSum = []
 # matrixSumRow1 = []
 # matrixSumRow2 = []
 
-# should output 3, 1, 7, 7
+# should output [[3, 1], [7, 7]]
+
+# the below code outputs [[7, 7], [7, 7]]
 
 #for row in range(0, len(matrix1)):
 #    print("The len is {0}, so this should run {0} times.".format(len(matrix1)))
