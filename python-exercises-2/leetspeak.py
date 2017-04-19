@@ -7,7 +7,7 @@ leet = {
     'S' : '5',
     'T' : '7'
 }
-#wordList = []
+wordList = []
 def translator():
     string = input("Please give me a string: ")
     for char in string:
