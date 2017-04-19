@@ -8,9 +8,9 @@ def looper(lBound, uBound):
         print(i)
 def checker(lBound, uBound):
     if lBound < uBound:
-        looper(promptLo(), promptHi())
+        looper(lBound, uBound)
     else:
         print("ERROR: start not less than end.")
 
-looper(promptLo(), promptHi())
-#checker(promptLo(), promptHi())
+#looper(promptLo(), promptHi())
+checker(promptLo(), promptHi())
