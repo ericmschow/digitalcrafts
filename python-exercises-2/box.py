@@ -5,13 +5,16 @@ def promptHeight():
 
 def looper(height, width):
     for i in range(height):
-        print(i)
-
-
+        #print(i)
+        if i == 0 or i == height - 1:
+            print("*" * width)
+        else:
+            print("*" + " " * (width - 2) + "*")
 
 #checks whether user inputs are positive
 def checker(lBound, uBound):
-    if lBound > 0 or uBound > 0:
+    print(lBound, uBound, sep=' ')
+    if lBound > 0 and uBound > 0:
         looper(lBound, uBound)
     else:
         print("ERROR: size cannot be <= 0.")
