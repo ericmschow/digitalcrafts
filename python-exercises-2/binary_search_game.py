@@ -30,10 +30,10 @@ def getDirection(arg):
 def start():
     while direction != 0:
         limits = binarySearch() # stores limits in tuple
-        #print("Tuple post binarySearch is: ", limits)
         global guess
-        guess = guesser(limits)
-        getDirection(guess)
+        guess = guesser(limits) # gets guess from limits
+        checker(guess) # checks if guess would be a repeat
+        getDirection(guess) # presents guess to player if not repeat
     print("Hooray! I win!")
     replay()
 
@@ -51,6 +51,9 @@ def binarySearch():
     if direction == 10:
         limits = (0, 100)
         return limits
+    elif maxGuess <= minGuess:
+        print("Are you cheating? There's nothing left to guess!")
+        replay()
     elif direction == 1:
         print("I'll guess higher. Updating minimum guess.")
         minGuess = guess + 1
@@ -65,17 +68,28 @@ def binarySearch():
         print("Error code 2 in binarySearch function.")
         quit(2)
 
+# adds guess to list and checks for repeats:
+def checker(num):
+    global guessedNumbers
+    if num in guessedNumbers:
+        print("Are you cheating? I've repeated myself!")
+        replay()
+    else:
+        guessedNumbers.append(num)
+
 # ask user if play again, reinitialize if Y, exit if N
 def replay():
     global direction
     global maxGuess
     global minGuess
+    global guessedNumbers
 
     resp = input("Can we play again? Respond Y or N:\n> ")
     if resp.lower() == 'y':
         direction = 10
         maxGuess = 100
         minGuess = 0
+        guessedNumbers = []
         print("Okay!")
         start()
     elif resp.lower() == 'n':
@@ -89,4 +103,5 @@ if __name__ == "__main__":
     direction = 10
     maxGuess = 100
     minGuess = 0
+    guessedNumbers = []
     start()
