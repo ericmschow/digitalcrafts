@@ -78,9 +78,12 @@ def replay():
         minGuess = 0
         print("Okay!")
         start()
-    if resp.lower() == 'n':
+    elif resp.lower() == 'n':
         print("Thanks for playing!")
         quit(0)
+    else:
+        print("Sorry, I don't understand. Let me ask again.")
+        replay()
 
 if __name__ == "__main__":
     direction = 10
