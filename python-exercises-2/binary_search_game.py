@@ -1,6 +1,5 @@
-direction = 10
-maxGuess = 100
-minGuess = 0
+#!/usr/bin/env python3
+
 
 # prompts user for whether guess is higher, lower, or correct and returns string
 def getStringResponse(num):
@@ -28,40 +27,59 @@ def getDirection(arg):
     return stringParser(getStringResponse(arg))
 
 def start():
-    guess = 50
+    #guess = 50
     while direction != 0:
-        print("Loop pre func Guess is: ", guess)
-        print("Loop pre func Direction is: ", direction)
-        print("Loop pre func Minguess is: ", minGuess, " and maxGuess is: ", maxGuess)
-        guess = binarySearch(guess, minGuess, maxGuess)
-        getDirection(guess)
-        print("Loop post func Guess is: ", guess)
-        print("Loop post Direction is: ", direction)
-        print("Loop post Minguess is: ", minGuess, " and maxGuess is: ", maxGuess)
-
-def binarySearch(guess_in, lower_param, upper_param):
-    print("DEBUG>",
-    "guess_in is ",
-    guess_in,
-    ". lower_param is ",
-    lower_param,
-    ". upper_param is ",
-    upper_param
-    )
-    if direction == 10:
-        pass
-    elif direction == 1:
+        #print("Loop pre func Guess is: ", guess)
+        #print("Loop pre func Direction is: ", direction)
+        #print("Loop pre func minGuess is: ", minGuess, " and maxGuess is: ", maxGuess)
+        #print("Tuple pre binarySearch is: ", limits)
+        limits = binarySearch() # stores limits in tuple
+        #print("Tuple post binarySearch is: ", limits)
         global guess
-        print("I'll guess higher.")
-        lower_bound = guess_in + 1
-        upper_bound = upper_param
-        guess = ((lower_bound + upper_bound) / 2)
-        print(type(guess))
-    #    return guess
+        guess = guesser(limits)
+        getDirection(guess)
+        #print("Loop post func Guess is: ", guess)
+        #print("Loop post Direction is: ", direction)
+        #print("Loop post minGuess is: ", minGuess, " and maxGuess is: ", maxGuess)
+
+# returns new guess from limits tuple
+def guesser(limits):
+    newGuess = round((limits[0]+limits[1])/2)
+    return newGuess
+
+# calculates new limits based on direction and returns (min, max) tuple
+def binarySearch():
+#    print("DEBUG>",
+#    "guess_in is ",
+#    guess_in,
+#    ". lower_param is ",
+#    lower_param,
+#    ". upper_param is ",
+#    upper_param
+#    )
+    global guess
+    global maxGuess
+    global minGuess
+    
+    if direction == 10:
+        return 0, 100
+    elif direction == 1:
+        print("I'll guess higher. Updating minimum guess.")
+        minGuess = guess + 1
+        limits = (minGuess, maxGuess)
+        return limits
     elif direction == 2:
         print("Let's handle lower later.")
+        print("I'll guess lower. Updating maximum guess.")
+        maxGuess = guess - 1
+        limits = (minGuess, maxGuess)
+        return limits
     else:
         print("Error code 2 in binarySearch function.")
         quit(2)
 
-start()
+if __name__ == "__main__":
+    direction = 10
+    maxGuess = 100
+    minGuess = 0
+    start()
