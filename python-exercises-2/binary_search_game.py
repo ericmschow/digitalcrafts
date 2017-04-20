@@ -22,25 +22,18 @@ def stringParser(response):
         print("I don't understand. Ending.")        # TODO add reinitialize somehow
         quit(1)
 
-# calls above two functions properly
+# calls above two functions cleanly for better readibility in start()
 def getDirection(arg):
     return stringParser(getStringResponse(arg))
 
+# contains while loop
 def start():
-    #guess = 50
     while direction != 0:
-        #print("Loop pre func Guess is: ", guess)
-        #print("Loop pre func Direction is: ", direction)
-        #print("Loop pre func minGuess is: ", minGuess, " and maxGuess is: ", maxGuess)
-        #print("Tuple pre binarySearch is: ", limits)
         limits = binarySearch() # stores limits in tuple
         #print("Tuple post binarySearch is: ", limits)
         global guess
         guess = guesser(limits)
         getDirection(guess)
-        #print("Loop post func Guess is: ", guess)
-        #print("Loop post Direction is: ", direction)
-        #print("Loop post minGuess is: ", minGuess, " and maxGuess is: ", maxGuess)
 
 # returns new guess from limits tuple
 def guesser(limits):
@@ -49,14 +42,6 @@ def guesser(limits):
 
 # calculates new limits based on direction and returns (min, max) tuple
 def binarySearch():
-#    print("DEBUG>",
-#    "guess_in is ",
-#    guess_in,
-#    ". lower_param is ",
-#    lower_param,
-#    ". upper_param is ",
-#    upper_param
-#    )
     global guess
     global maxGuess
     global minGuess
@@ -70,7 +55,6 @@ def binarySearch():
         limits = (minGuess, maxGuess)
         return limits
     elif direction == 2:
-    #    print("Let's handle lower later.")
         print("I'll guess lower. Updating maximum guess.")
         maxGuess = guess - 1
         limits = (minGuess, maxGuess)
