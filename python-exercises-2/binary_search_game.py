@@ -34,6 +34,8 @@ def start():
         global guess
         guess = guesser(limits)
         getDirection(guess)
+    print("Hooray! I win!")
+    replay()
 
 # returns new guess from limits tuple
 def guesser(limits):
@@ -62,6 +64,23 @@ def binarySearch():
     else:
         print("Error code 2 in binarySearch function.")
         quit(2)
+
+# ask user if play again, reinitialize if Y, exit if N
+def replay():
+    global direction
+    global maxGuess
+    global minGuess
+
+    resp = input("Can we play again? Respond Y or N:\n> ")
+    if resp.lower() == 'y':
+        direction = 10
+        maxGuess = 100
+        minGuess = 0
+        print("Okay!")
+        start()
+    if resp.lower() == 'n':
+        print("Thanks for playing!")
+        quit(0)
 
 if __name__ == "__main__":
     direction = 10
