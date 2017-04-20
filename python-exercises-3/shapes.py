@@ -12,6 +12,17 @@ def triangle(size, col, fill="Default"):
         end_fill()
     #mainloop()
 
+def triangleFlip(size, col, fill="Default"):
+    if fill == True:
+        begin_fill()
+    color(col)
+    for i in range(3):
+        forward(int(size))
+        right(120)
+        i =+ 1
+    if fill == True:
+        end_fill()
+
 def square(size, col, fill="Default"):
     if fill == True:
         begin_fill()
