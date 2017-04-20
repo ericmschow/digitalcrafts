@@ -60,16 +60,17 @@ def binarySearch():
     global guess
     global maxGuess
     global minGuess
-    
+
     if direction == 10:
-        return 0, 100
+        limits = (0, 100)
+        return limits
     elif direction == 1:
         print("I'll guess higher. Updating minimum guess.")
         minGuess = guess + 1
         limits = (minGuess, maxGuess)
         return limits
     elif direction == 2:
-        print("Let's handle lower later.")
+    #    print("Let's handle lower later.")
         print("I'll guess lower. Updating maximum guess.")
         maxGuess = guess - 1
         limits = (minGuess, maxGuess)
