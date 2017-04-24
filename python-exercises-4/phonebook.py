@@ -1,3 +1,5 @@
+import pickle
+
 def prompter():
     print("""
     ELECTRONIC PHONE BOOK
@@ -12,7 +14,7 @@ def prompter():
     choice = int(input("What would you like to do? (1-7) > "))
     if choice not in range(1, 8):
         print("Please enter a choice from the options above.")
-        prompter()
+        main()
     else:
         return choice
 
@@ -57,10 +59,18 @@ def listall():
     main()
 
 def saver():
-    pass
+    myfile = open('phonebook.pickle', 'wb')
+    pickle.dump(book, myfile)
+    myfile.close()
+    print("Saving completed to phonebook.pickle.")
+    main()
 
 def loader():
-    pass
+    myfile = open('phonebook.pickle', 'rb')
+    global book
+    book = pickle.load(myfile)
+    print("Loading completed.")
+    main()
 
 def main():
     choice = prompter()
