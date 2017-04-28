@@ -2,6 +2,7 @@ import pygame
 import os
 import time
 from random import randint
+from math import sqrt
 
 class Background():
     def __init__(self):
@@ -180,28 +181,29 @@ class Monster(Character):
 
 
 class Engine():
+    def __init__(self):
+        self.collisionvar = 0
+        self.width = 512
+        self.height = 480
+        self.blue_color = (97, 159, 182)
+        self.character_list = pygame.sprite.Group()
+        self.sprite_list = pygame.sprite.Group()
+        self.hero_sprite_list = pygame.sprite.Group()
+        self.monster_sprite_list = pygame.sprite.Group()
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption('Catch the Monster!')
 
-    width = 512
-    height = 480
-    blue_color = (97, 159, 182)
-    character_list = pygame.sprite.Group()
-    sprite_list = pygame.sprite.Group()
-    hero_sprite_list = pygame.sprite.Group()
-    monster_sprite_list = pygame.sprite.Group()
 
 
     def main(self):
-        pygame.init()
-        screen = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption('Catch the Monster!')
         clock = pygame.time.Clock()
-
         # Game initialization
         bg = Background()
     #    bounding = Bounding()
         hero = Hero()
         monster = Monster()
-        collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
+        #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
         # while collisionvar:
         #     monster.xpos = randint(0, self.width-32)
         #     monster.ypos = randint(0, self.height-32)
@@ -252,8 +254,6 @@ class Engine():
                     #     hero.direction = 'right'
                     if event.key == 113: # Q for Quit
                         stop_game = True
-                    if event.key == pygame.K_SPACE and collisionvar == 1:
-                        engine.main()
                     # elif event.key == 273 and event.key == 276:
                     #     hero.direction = 'upleft'
                     # elif event.key == 273 and event.key == 275:
@@ -276,46 +276,83 @@ class Engine():
             hero.move(hero.direction)
 
             # collision detection
-            collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
-            if collisionvar == 1:
-                screen.fill(self.blue_color)
-                screen.blit(bg.image,(0, 0))
-                screen.blit(hero.image, (hero.xpos, hero.ypos))
-                font = pygame.font.SysFont('comicsansms', 50)
-                text = font.render("You win! Press spacebar to play again!", True, (0, 0, 255))
-                screen.blit(text, (256, 240))
+            #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
 
-            else:
-                pass
+            # NEED IMPLEMENT MATH
+            distance = sqrt(((hero.xpos - monster.xpos) ** 2) + ((hero.ypos - monster.ypos) ** 2))
+            #print(distance)
 
-
-            # Draw background
-            screen.fill(self.blue_color)
+            #print(self.collisionvar)
+        #    if not self.collisionvar:
+                #if hero.rect.colliderect(monster.rect):
+                    #stop_game = True
+                # Draw background
+            #print("GAMEPLAY")
+            self.screen.fill(self.blue_color)
             # Render background image
-            screen.blit(bg.image, (0, 0))
+            self.screen.blit(bg.image, (0, 0))
             # Draw bounding box over image
         #    screen.blit(bounding.image, (bounding.xpos, bounding.ypos))
 
             # Game display
             # render sprites
-
-            screen.blit(hero.image, (hero.xpos, hero.ypos)) # render heroSpr
-            screen.blit(monster.image, (monster.xpos, monster.ypos))
-
+            self.screen.blit(monster.image, (monster.xpos, monster.ypos))
+            self.screen.blit(hero.image, (hero.xpos, hero.ypos)) #
             #update changes
-            # hero.rect = hero.image.get_rect()
-            # monster.rect = monster.image.get_rect()
             hero.bounding_update()
             monster.bounding_update()
-
-
-
             pygame.display.update()
+
+            if distance < 32:
+                break
+
+            # else:
+            #
+            #     print("GOT HERE")
+            #     screen.fill(self.blue_color)
+            #     screen.blit(bg.image,(0, 0))
+            #     screen.blit(hero.image, (hero.xpos, hero.ypos))
+            #     font = pygame.font.SysFont('comicsansms', 30)
+            #     text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
+            #     screen.blit(text, (68, 240))
+            #     pygame.display.update()
+
             clock.tick(60)
 
+        if not stop_game:
+            self.playAgain(hero, bg)
+        else:
+            pygame.quit()
 
+    def playAgain(self, heroparam, bgparam):
+    #    print("GOT HERE")
+        hero = heroparam
+        bg = bgparam
+        self.screen.fill(self.blue_color)
+        self.screen.blit(bg.image,(0, 0))
+        self.screen.blit(hero.image, (hero.xpos, hero.ypos))
+        font = pygame.font.SysFont('comicsansms', 30)
+        text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
+        self.screen.blit(text, (68, 240))
+        pygame.display.update()
+        hero.direction = 'default'
+        stop_game = False
 
+        while not stop_game:
+            for event in pygame.event.get():
+            # Event handling
+                keys = pygame.key.get_pressed()
+                if event.type == pygame.QUIT:
+                    stop_game = True
+
+                if event.type == pygame.KEYDOWN:
+
+                    if event.key == 113: # Q for Quit
+                        stop_game = True
+                    if event.key == pygame.K_SPACE:
+                        engine.main()
         pygame.quit()
+
 
 if __name__ == '__main__':
     engine = Engine()
