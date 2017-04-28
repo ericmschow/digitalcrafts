@@ -37,12 +37,12 @@ class Character(pygame.sprite.Sprite):
         self.direction = 'default'
         self.image = pygame.image.load(os.path.join('images', 'hero.png'))
         self.wait_timer = 0
-        self.rect = self.image.get_rect()
-        self.image_w, self.image_h = self.image.get_size()
-        self.rect.move(self.xpos, self.ypos)
-        self.rect.topleft = (self.xpos, self.ypos)
-        self.rect.bottomright = (self.xpos + self.image_w, self.ypos + self.image_h)
-        engine.sprite_list.add(self)
+        # self.rect = self.image.get_rect()
+        # self.image_w, self.image_h = self.image.get_size()
+        # self.rect.move(self.xpos, self.ypos)
+        # self.rect.topleft = (self.xpos, self.ypos)
+        # self.rect.bottomright = (self.xpos + self.image_w, self.ypos + self.image_h)
+        # engine.sprite_list.add(self)
         #engine.character_list.add(self)
     def bounding_update(self):
         self.rect = self.image.get_rect()
@@ -98,7 +98,7 @@ class Hero(Character):
         self.ypos = 240
         self.speed = 1.8
         self.image = pygame.image.load(os.path.join('images', 'hero.png'))#.convert()
-        engine.hero_sprite_list.add(self)
+#        engine.hero_sprite_list.add(self)
         #self.inbounds = 1
 
     def move(self, direction):
@@ -150,13 +150,24 @@ class Hero(Character):
             else:
                 print('Error in {} move function.'.format(self))
 
-class Monster(Character):
+class Enemy(Character):
     def __init__(self):
         super().__init__()
         self.xpos = randint(0, engine.width-32)
         self.ypos = randint(0, engine.height-32)
-        self.image = pygame.image.load(os.path.join('images', 'monster.png'))#.convert()
-        engine.monster_sprite_list.add(self)
+        self.image = pygame.image.load(os.path.join('images', 'monster.png'))
+
+    def check_coll(self, hero):
+        distance = sqrt(((hero.xpos - self.xpos) ** 2) + ((hero.ypos - self.ypos) ** 2))
+        if distance < 32:
+            if self.name == 'goblin':
+                engine.goblincollvar = True
+            elif self.name == 'monster':
+                engine.monstercollvar = True
+            else:
+                print("Error in {}.check_coll".format(self))
+        else:
+            return False
 
     def pick_dir(self):
         direction = randint(0, 7)
@@ -177,32 +188,63 @@ class Monster(Character):
         elif direction == 7:
             self.direction = 'upright'
         else:
-            print("Error in Monster().pick_dir()")
+            print("Error in {}}.pick_dir()".format(self))
 
+class Monster(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join('images', 'monster.png'))
+        self.name = 'monster'
+
+
+class Goblin(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join('images', 'goblin.png'))#.convert()
+        self.speed = 1.5
+        self.name = 'goblin'
 
 class Engine():
+
     def __init__(self):
         self.collisionvar = 0
         self.width = 512
         self.height = 480
         self.blue_color = (97, 159, 182)
-        self.character_list = pygame.sprite.Group()
-        self.sprite_list = pygame.sprite.Group()
-        self.hero_sprite_list = pygame.sprite.Group()
-        self.monster_sprite_list = pygame.sprite.Group()
+        # self.character_list = pygame.sprite.Group()
+        # self.sprite_list = pygame.sprite.Group()
+        # self.hero_sprite_list = pygame.sprite.Group()
+        # self.monster_sprite_list = pygame.sprite.Group()
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption('Catch the Monster!')
 
+    # def monstercoll(self, hero, monster):
+    #     distance = sqrt(((hero.xpos - monster.xpos) ** 2) + ((hero.ypos - monster.ypos) ** 2))
+    #     if distance < 32:
+    #         return True
+    #     else:
+    #         return False
+    #
+    # def goblincoll(self, hero, goblin):
+    #     distance = sqrt(((hero.xpos - goblin.xpos) ** 2) + ((hero.ypos - goblin.ypos) ** 2))
+    #     if distance < 32:
+    #         self.goblincollvar = True
+    #         return True
+    #     else:
+    #         return False
 
 
     def main(self):
         clock = pygame.time.Clock()
+        self.goblincollvar = False
+        self.monstercollvar = False
         # Game initialization
         bg = Background()
     #    bounding = Bounding()
         hero = Hero()
         monster = Monster()
+        goblin = Goblin()
         #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
         # while collisionvar:
         #     monster.xpos = randint(0, self.width-32)
@@ -254,40 +296,25 @@ class Engine():
                     #     hero.direction = 'right'
                     if event.key == 113: # Q for Quit
                         stop_game = True
-                    # elif event.key == 273 and event.key == 276:
-                    #     hero.direction = 'upleft'
-                    # elif event.key == 273 and event.key == 275:
-                    #     hero.direction = 'upright'
-                    # elif event.key == 274 and event.key == 276:
-                    #     hero.direction = 'downleft'
-                    # elif event.key == 274 and event.key == 275:
-                    #     hero.direction = 'downright'
-                # elif event.type == pygame.KEYUP:
-                #     if event.key in range (273, 277):
-                #         hero.direction = 'default'
 
             # Game logic
 
             # characters movement
-            if monster.wait_timer == 0: # triggers direction change
+            if monster.wait_timer == 15: # triggers direction change
                 monster.pick_dir()
             monster.wait_timer = (monster.wait_timer + 1) % 90 # every N frames
             monster.move(monster.direction) # move in direction with each step
+            if goblin.wait_timer == 15:
+                goblin.pick_dir()
+            goblin.wait_timer = (goblin.wait_timer + 1) % 75
+            goblin.move(goblin.direction)
             hero.move(hero.direction)
 
-            # collision detection
-            #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
+            # check collisions
 
-            # NEED IMPLEMENT MATH
-            distance = sqrt(((hero.xpos - monster.xpos) ** 2) + ((hero.ypos - monster.ypos) ** 2))
-            #print(distance)
+            goblin.check_coll(hero)
+            monster.check_coll(hero)
 
-            #print(self.collisionvar)
-        #    if not self.collisionvar:
-                #if hero.rect.colliderect(monster.rect):
-                    #stop_game = True
-                # Draw background
-            #print("GAMEPLAY")
             self.screen.fill(self.blue_color)
             # Render background image
             self.screen.blit(bg.image, (0, 0))
@@ -297,13 +324,14 @@ class Engine():
             # Game display
             # render sprites
             self.screen.blit(monster.image, (monster.xpos, monster.ypos))
+            self.screen.blit(goblin.image, (goblin.xpos, goblin.ypos))
             self.screen.blit(hero.image, (hero.xpos, hero.ypos)) #
             #update changes
-            hero.bounding_update()
-            monster.bounding_update()
+    #        hero.bounding_update()
+    #        monster.bounding_update()
             pygame.display.update()
 
-            if distance < 32:
+            if self.monstercollvar or self.goblincollvar:
                 break
 
             # else:
@@ -332,7 +360,10 @@ class Engine():
         self.screen.blit(bg.image,(0, 0))
         self.screen.blit(hero.image, (hero.xpos, hero.ypos))
         font = pygame.font.SysFont('comicsansms', 30)
-        text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
+        if self.goblincollvar:
+            text = font.render("You lose! Press spacebar to play again!", True, (230, 20, 20))
+        else:
+            text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
         self.screen.blit(text, (68, 240))
         pygame.display.update()
         hero.direction = 'default'
