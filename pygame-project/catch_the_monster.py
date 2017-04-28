@@ -252,6 +252,7 @@ class Engine():
 
         stop_game = False
         while not stop_game:
+            pygame.init()
             for event in pygame.event.get():
                 # Event handling
                 keys = pygame.key.get_pressed()
@@ -325,13 +326,13 @@ class Engine():
             # characters movement
             if monster.wait_timer == 15: # triggers direction change
                 monster.pick_dir()
-            monster.wait_timer = (monster.wait_timer + 1) % 90 # every N frames
+            monster.wait_timer = (monster.wait_timer + randint(0, 1)) % 30 # every N frames
             monster.move(monster.direction) # move in direction with each step
 
             for goblin in goblins:
                 if goblin.wait_timer == 15:
                     goblin.pick_dir()
-                goblin.wait_timer = (goblin.wait_timer + 1) % 75
+                goblin.wait_timer = (goblin.wait_timer + randint(0, 1)) % 25
                 goblin.move(goblin.direction)
                 goblin.bounding_update()
                 goblin.check_coll(hero)
@@ -375,6 +376,7 @@ class Engine():
 
     def playAgain(self, heroparam, bgparam):
     #    print("GOT HERE")
+        pygame.init()
         hero = heroparam
         bg = bgparam
         self.screen.fill(self.blue_color)
@@ -396,6 +398,7 @@ class Engine():
         stop_game = False
 
         while not stop_game:
+
             for event in pygame.event.get():
             # Event handling
                 keys = pygame.key.get_pressed()
