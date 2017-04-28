@@ -4,29 +4,22 @@ import time
 from random import randint
 from math import sqrt
 
+# if joystick stuff doesn't go here it breaks
+
+pygame.init()
+pygame.joystick.init()
+# Get count of joysticks
+joystick_count = pygame.joystick.get_count()
+
+# For each joystick:
+for i in range(joystick_count):
+    joystick = pygame.joystick.Joystick(i)
+    joystick.init()
+
 class Background():
     def __init__(self):
         #super().__init__()
         self.image = pygame.image.load(os.path.join('images', 'background.png'))
-
-# class Bounding():
-#     def __init__(self):
-#         self.xpos = 32
-#         self.ypos = 32
-#         self.image = pygame.Surface((448, 416))
-#         self.image.set_colorkey((0, 0, 0))
-#         self.rect = self.image.get_rect()
-
-
-# class Bounding(pygame.sprite.Sprite):
-#     def __init__(self):
-#         super().__init__()
-#         self.xpos = 32
-#         self.ypos = 32
-#         self.image = pygame.Surface((448, 416))   # 448, 416
-#         #self.image.set_colorkey((0, 0, 0))
-#         self.rect = self.image.get_rect()
-#         engine.sprite_list.add(self)
 
 class Character(pygame.sprite.Sprite):
     def __init__(self):
@@ -98,8 +91,6 @@ class Hero(Character):
         self.ypos = 240
         self.speed = 1.8
         self.image = pygame.image.load(os.path.join('images', 'hero.png'))#.convert()
-#        engine.hero_sprite_list.add(self)
-        #self.inbounds = 1
 
     def move(self, direction):
         K = 0.707 # factor to correct for diagonal speed advantage
@@ -205,6 +196,7 @@ class Monster(Enemy):
 class Goblin(Enemy):
     def __init__(self):
         super().__init__()
+        directions = ['up','left','down','right']
         self.image = pygame.image.load(os.path.join('images', 'goblin.png'))
 #        self.newColor = (randint(0, 128), randint(0, 255), randint(0, 255), 64)
 #        self.mask = self.image
@@ -214,8 +206,10 @@ class Goblin(Enemy):
 #        self.mask = pygame.Surface.subsurface(self.image)
 #        self.mask.set_alpha(128)
 #        self.mask.fill(newColor)
-        self.speed = 1.5
+        self.direction = directions[randint(0,3)]
+        self.speed = 1.5 * randint(5, 12)/10
         self.name = 'goblin'
+        self.wait_timer += randint(1, 60)
 
 #    def colorize(self, rect, newColor):
 #        rect = rect
@@ -229,16 +223,13 @@ class Goblin(Enemy):
 class Engine():
 
     def __init__(self):
+
         self.level = 1
         self.collisionvar = 0
         self.width = 512
         self.height = 480
         self.blue_color = (97, 159, 182)
-        # self.character_list = pygame.sprite.Group()
         self.sprite_list = pygame.sprite.Group()
-        # self.hero_sprite_list = pygame.sprite.Group()
-        # self.monster_sprite_list = pygame.sprite.Group()
-        pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption('Catch the Monster!')
 
@@ -285,6 +276,25 @@ class Engine():
                     hero.direction = 'right'
                 else:
                     hero.direction = 'default'
+        #joystick controls   axis 0 left-right neg-pos, axis 1 up-down neg-pos
+                if joystick.get_axis(0) < -.5 and joystick.get_axis(1) < -.5:
+                    hero.direction = 'upleft'
+                elif joystick.get_axis(0) > .5 and joystick.get_axis(1) < -.5:
+                    hero.direction = 'upright'
+                elif joystick.get_axis(0) < -.5 and joystick.get_axis(1) > .5:
+                    hero.direction = 'downleft'
+                elif joystick.get_axis(0) > .5 and joystick.get_axis(1) > .5:
+                    hero.direction = 'downright'
+                elif joystick.get_axis(1) > .5:
+                    hero.direction = 'down'
+                elif joystick.get_axis(1) < -.5:
+                     hero.direction = 'up'
+                elif joystick.get_axis(0) < -.5:
+                    hero.direction = 'left'
+                elif joystick.get_axis(0) > .5:
+                    hero.direction = 'right'
+                else:
+                    hero.direction = 'default'
 
                 if event.type == pygame.KEYDOWN:
                     # if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
@@ -304,6 +314,10 @@ class Engine():
                     # elif keys[pygame.K_RIGHT]:
                     #     hero.direction = 'right'
                     if event.key == 113: # Q for Quit
+                        stop_game = True
+
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if joystick.get_button(2) == True: # Q for Quit
                         stop_game = True
 
             # Game logic
@@ -333,7 +347,10 @@ class Engine():
             self.screen.blit(bg.image, (0, 0))
             # Game display
             # render sprites
+
             pygame.sprite.Group.draw(self.sprite_list, self.screen)
+
+            # render level text
 
             font = pygame.font.SysFont('arial', 30)
             stats = font.render('LEVEL '+str(self.level), True, (255, 255, 255))
@@ -341,23 +358,13 @@ class Engine():
 
             #update changes
             # all goblin checks moved to for goblins loop to conserve resources
+
             hero.bounding_update()
             monster.bounding_update()
             pygame.display.update()
 
             if self.monstercollvar or self.goblincollvar:
                 break
-
-            # else:
-            #
-            #     print("GOT HERE")
-            #     screen.fill(self.blue_color)
-            #     screen.blit(bg.image,(0, 0))
-            #     screen.blit(hero.image, (hero.xpos, hero.ypos))
-            #     font = pygame.font.SysFont('comicsansms', 30)
-            #     text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
-            #     screen.blit(text, (68, 240))
-            #     pygame.display.update()
 
             clock.tick(60)
 
@@ -375,12 +382,14 @@ class Engine():
         self.screen.blit(hero.image, (hero.xpos, hero.ypos))
         font = pygame.font.SysFont('comicsansms', 30)
         if self.goblincollvar:
-            text = font.render("You lose! Press spacebar to play again!", True, (230, 20, 20))
+            text1 = font.render("You lose! Press start or spacebar to play again!", True, (230, 20, 20))
             self.level = 1
         else:
-            text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
+            text1 = font.render("You win! Press start or spacebar to play again!", True, (126, 126, 255))
             self.level += 1
-        self.screen.blit(text, (68, 240))
+        text2 = font.render("Press (B) or Q to quit", True, (10, 10, 10))
+        self.screen.blit(text1, (25, 240))
+        self.screen.blit(text2, (160, 280))
         pygame.display.update()
     #    self.sprite_list.empty()
         hero.direction = 'default'
@@ -397,10 +406,18 @@ class Engine():
 
                     if event.key == 113: # Q for Quit
                         stop_game = True
-                    if event.key == pygame.K_SPACE:
+                    elif event.key == pygame.K_SPACE:
                         self.sprite_list.empty()
                         pygame.display.update()
+                        engine.main()
 
+                if event.type == pygame.JOYBUTTONDOWN:
+
+                    if joystick.get_button(2) == True: # Q for Quit
+                        stop_game = True
+                    elif joystick.get_button(6) == True or joystick.get_button(7) == True or joystick.get_button(1):
+                        self.sprite_list.empty()
+                        pygame.display.update()
                         engine.main()
         pygame.quit()
 
