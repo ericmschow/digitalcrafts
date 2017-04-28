@@ -37,12 +37,12 @@ class Character(pygame.sprite.Sprite):
         self.direction = 'default'
         self.image = pygame.image.load(os.path.join('images', 'hero.png'))
         self.wait_timer = 0
-        # self.rect = self.image.get_rect()
-        # self.image_w, self.image_h = self.image.get_size()
-        # self.rect.move(self.xpos, self.ypos)
-        # self.rect.topleft = (self.xpos, self.ypos)
-        # self.rect.bottomright = (self.xpos + self.image_w, self.ypos + self.image_h)
-        # engine.sprite_list.add(self)
+        self.rect = self.image.get_rect()
+        self.image_w, self.image_h = self.image.get_size()
+        self.rect.move(self.xpos, self.ypos)
+        self.rect.topleft = (self.xpos, self.ypos)
+        self.rect.bottomright = (self.xpos + self.image_w, self.ypos + self.image_h)
+        engine.sprite_list.add(self)
         #engine.character_list.add(self)
     def bounding_update(self):
         self.rect = self.image.get_rect()
@@ -153,8 +153,13 @@ class Hero(Character):
 class Enemy(Character):
     def __init__(self):
         super().__init__()
-        self.xpos = randint(0, engine.width-32)
-        self.ypos = randint(0, engine.height-32)
+        self.saferange = 45
+        self.xpos = int(randint(0, engine.width-32))
+        self.ypos = int(randint(0, engine.height-32))
+        while self.xpos in range(int(engine.width/2-self.saferange), int(engine.width/2+self.saferange)):
+            self.xpos = int(randint(0, engine.width-32))
+        while self.ypos in range(int(engine.width/2-self.saferange), int(engine.width/2+self.saferange)):
+            self.ypos = int(randint(0, engine.height-32))
         self.image = pygame.image.load(os.path.join('images', 'monster.png'))
 
     def check_coll(self, hero):
@@ -200,40 +205,42 @@ class Monster(Enemy):
 class Goblin(Enemy):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join('images', 'goblin.png'))#.convert()
+        self.image = pygame.image.load(os.path.join('images', 'goblin.png'))
+#        self.newColor = (randint(0, 128), randint(0, 255), randint(0, 255), 64)
+#        self.mask = self.image
+#        self.mask.fill(self.newColor)
+#        self.image = self.image.blit(self.mask, self.image)
+#        self.rect = self.colorize(self.rect, self.newColor)
+#        self.mask = pygame.Surface.subsurface(self.image)
+#        self.mask.set_alpha(128)
+#        self.mask.fill(newColor)
         self.speed = 1.5
         self.name = 'goblin'
+
+#    def colorize(self, rect, newColor):
+#        rect = rect
+#        # zero out RGB values
+#        # image.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
+#        # add in new RGB values
+#        rect.fill(newColor[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
+#        rect.set_alpha(128)
+#        return rect
 
 class Engine():
 
     def __init__(self):
+        self.level = 1
         self.collisionvar = 0
         self.width = 512
         self.height = 480
         self.blue_color = (97, 159, 182)
         # self.character_list = pygame.sprite.Group()
-        # self.sprite_list = pygame.sprite.Group()
+        self.sprite_list = pygame.sprite.Group()
         # self.hero_sprite_list = pygame.sprite.Group()
         # self.monster_sprite_list = pygame.sprite.Group()
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption('Catch the Monster!')
-
-    # def monstercoll(self, hero, monster):
-    #     distance = sqrt(((hero.xpos - monster.xpos) ** 2) + ((hero.ypos - monster.ypos) ** 2))
-    #     if distance < 32:
-    #         return True
-    #     else:
-    #         return False
-    #
-    # def goblincoll(self, hero, goblin):
-    #     distance = sqrt(((hero.xpos - goblin.xpos) ** 2) + ((hero.ypos - goblin.ypos) ** 2))
-    #     if distance < 32:
-    #         self.goblincollvar = True
-    #         return True
-    #     else:
-    #         return False
-
 
     def main(self):
         clock = pygame.time.Clock()
@@ -241,16 +248,16 @@ class Engine():
         self.monstercollvar = False
         # Game initialization
         bg = Background()
-    #    bounding = Bounding()
+        self.sprite_list.empty()
+
+        # initialize characters
         hero = Hero()
+        enemylist = []
         monster = Monster()
-        goblin1 = Goblin()
-        goblin2 = Goblin()
-        goblin3 = Goblin()
-        #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
-        # while collisionvar:
-        #     monster.xpos = randint(0, self.width-32)
-        #     monster.ypos = randint(0, self.height-32)
+        goblins = list()
+        for i in range(self.level):
+            goblins.append(Goblin())
+        #print('pre loop goblins is ', goblins)
 
         stop_game = False
         while not stop_game:
@@ -306,46 +313,36 @@ class Engine():
                 monster.pick_dir()
             monster.wait_timer = (monster.wait_timer + 1) % 90 # every N frames
             monster.move(monster.direction) # move in direction with each step
-            if goblin1.wait_timer == 15:
-                goblin1.pick_dir()
-            goblin1.wait_timer = (goblin1.wait_timer + 1) % 75
-            goblin1.move(goblin1.direction)
 
-            if goblin2.wait_timer == 15:
-                goblin2.pick_dir()
-            goblin2.wait_timer = (goblin2.wait_timer + 1) % 75
-            goblin2.move(goblin2.direction)
-
-            if goblin3.wait_timer == 15:
-                goblin3.pick_dir()
-            goblin3.wait_timer = (goblin3.wait_timer + 1) % 75
-            goblin3.move(goblin3.direction)
+            for goblin in goblins:
+                if goblin.wait_timer == 15:
+                    goblin.pick_dir()
+                goblin.wait_timer = (goblin.wait_timer + 1) % 75
+                goblin.move(goblin.direction)
+                goblin.bounding_update()
+                goblin.check_coll(hero)
 
             hero.move(hero.direction)
 
             # check collisions
 
-            goblin1.check_coll(hero)
-            goblin2.check_coll(hero)
-            goblin3.check_coll(hero)
             monster.check_coll(hero)
 
             self.screen.fill(self.blue_color)
             # Render background image
             self.screen.blit(bg.image, (0, 0))
-            # Draw bounding box over image
-        #    screen.blit(bounding.image, (bounding.xpos, bounding.ypos))
-
             # Game display
             # render sprites
-            self.screen.blit(monster.image, (monster.xpos, monster.ypos))
-            self.screen.blit(goblin1.image, (goblin1.xpos, goblin1.ypos))
-            self.screen.blit(goblin2.image, (goblin2.xpos, goblin2.ypos))
-            self.screen.blit(goblin3.image, (goblin3.xpos, goblin3.ypos))
-            self.screen.blit(hero.image, (hero.xpos, hero.ypos)) #
+            pygame.sprite.Group.draw(self.sprite_list, self.screen)
+
+            font = pygame.font.SysFont('arial', 30)
+            stats = font.render('LEVEL '+str(self.level), True, (255, 255, 255))
+            self.screen.blit(stats, (425, 5))
+
             #update changes
-    #        hero.bounding_update()
-    #        monster.bounding_update()
+            # all goblin checks moved to for goblins loop to conserve resources
+            hero.bounding_update()
+            monster.bounding_update()
             pygame.display.update()
 
             if self.monstercollvar or self.goblincollvar:
@@ -379,10 +376,13 @@ class Engine():
         font = pygame.font.SysFont('comicsansms', 30)
         if self.goblincollvar:
             text = font.render("You lose! Press spacebar to play again!", True, (230, 20, 20))
+            self.level = 1
         else:
             text = font.render("You win! Press spacebar to play again!", True, (126, 126, 255))
+            self.level += 1
         self.screen.blit(text, (68, 240))
         pygame.display.update()
+    #    self.sprite_list.empty()
         hero.direction = 'default'
         stop_game = False
 
@@ -398,6 +398,9 @@ class Engine():
                     if event.key == 113: # Q for Quit
                         stop_game = True
                     if event.key == pygame.K_SPACE:
+                        self.sprite_list.empty()
+                        pygame.display.update()
+
                         engine.main()
         pygame.quit()
 
