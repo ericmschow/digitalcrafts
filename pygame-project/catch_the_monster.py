@@ -244,7 +244,9 @@ class Engine():
     #    bounding = Bounding()
         hero = Hero()
         monster = Monster()
-        goblin = Goblin()
+        goblin1 = Goblin()
+        goblin2 = Goblin()
+        goblin3 = Goblin()
         #self.collisionvar = hero.rect.colliderect(monster.rect) # returns 1 if collide
         # while collisionvar:
         #     monster.xpos = randint(0, self.width-32)
@@ -304,15 +306,28 @@ class Engine():
                 monster.pick_dir()
             monster.wait_timer = (monster.wait_timer + 1) % 90 # every N frames
             monster.move(monster.direction) # move in direction with each step
-            if goblin.wait_timer == 15:
-                goblin.pick_dir()
-            goblin.wait_timer = (goblin.wait_timer + 1) % 75
-            goblin.move(goblin.direction)
+            if goblin1.wait_timer == 15:
+                goblin1.pick_dir()
+            goblin1.wait_timer = (goblin1.wait_timer + 1) % 75
+            goblin1.move(goblin1.direction)
+
+            if goblin2.wait_timer == 15:
+                goblin2.pick_dir()
+            goblin2.wait_timer = (goblin2.wait_timer + 1) % 75
+            goblin2.move(goblin2.direction)
+
+            if goblin3.wait_timer == 15:
+                goblin3.pick_dir()
+            goblin3.wait_timer = (goblin3.wait_timer + 1) % 75
+            goblin3.move(goblin3.direction)
+
             hero.move(hero.direction)
 
             # check collisions
 
-            goblin.check_coll(hero)
+            goblin1.check_coll(hero)
+            goblin2.check_coll(hero)
+            goblin3.check_coll(hero)
             monster.check_coll(hero)
 
             self.screen.fill(self.blue_color)
@@ -324,7 +339,9 @@ class Engine():
             # Game display
             # render sprites
             self.screen.blit(monster.image, (monster.xpos, monster.ypos))
-            self.screen.blit(goblin.image, (goblin.xpos, goblin.ypos))
+            self.screen.blit(goblin1.image, (goblin1.xpos, goblin1.ypos))
+            self.screen.blit(goblin2.image, (goblin2.xpos, goblin2.ypos))
+            self.screen.blit(goblin3.image, (goblin3.xpos, goblin3.ypos))
             self.screen.blit(hero.image, (hero.xpos, hero.ypos)) #
             #update changes
     #        hero.bounding_update()
