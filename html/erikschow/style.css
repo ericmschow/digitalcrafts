@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-family: 'Roboto', sans-serif;
+  /*background-color: lightgrey;*/
+}
+
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
+}
+
+a, a:link, a:visited, a:active {
+text-decoration: underline;
+color: grey;
+}
+
+img {
+border: none;
+}
+
+a:hover {
+  color: #4CAF50;
+}
+
+p {
+
+}
+
+header {
+
+}
+
+h1 {
+  color: #efefef;
+  margin-left: 10em;
+}
+
+ul.topnav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1.5em;
+    overflow: hidden;
+    background-color: midnightblue;
+    opacity: .6;
+}
+
+ul.topnav li {float: left;}
+
+ul.topnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: #4CAF50;}
+
+ul.topnav li.right {float: right;}
+
+nav ul, nav a {
+  padding-left: 0em;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 3px;
+}
+
+.next {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 10px;
+}
+
+p {
+  clear:left;
+  clear:right;
+  font-size: 1.05em;
+  padding-left: 5em;
+  color: #ddd;
+}
+
+main {
+  margin-top: 3em;
+  clear:left;
+  background-color: rgba(22, 22, 22, 0.7);
+  padding-bottom: 5em;
+
+
+}
+p {
+  opacity: 1;
+}
+
+#last {
+  border: none;
+}
+
+.small {
+  font-size: .8em;
+  padding-left: 6em;
+}
+
+
+
+@media screen and (max-width: 600px){
+    ul.topnav li.right,
+    ul.topnav li {
+      float: none;
+      line-height: .5;
+    }
+
+    nav a {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    ul.topnav a {
+      padding: 2px;
+      line-height: .5em;
+    }
+    h1 {
+      margin: auto;
+      text-align: center;
+    }
+    body {
+      background-size: 125%;
+      background-color: black;
+    }
+    p {
+      padding-left: 0em;
+      text-align: center;
+    }
+}
