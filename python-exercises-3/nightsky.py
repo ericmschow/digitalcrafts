@@ -4,6 +4,8 @@ from random import randint
 
 def main():
     bgcolor('black')
+    hideturtle()
+    speed(0)
     def looper():
         for i in range(20):
             placerator()
@@ -21,7 +23,7 @@ def main():
     #returns tuple with random size and color
     def stellerator():
         col = ''
-        size = randint(50, 150)
+        size = randint(3, 8)
         colornum = randint(1, 4)
         if colornum == 1:
             col = 'white'

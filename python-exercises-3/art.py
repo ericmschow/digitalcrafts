@@ -4,7 +4,7 @@ from turtle import *
 # logo has three sizes of triangles
 # logo has 13 colors:
 #   3 shades each of green, blue, orange, and grey
-colors = {
+COLORS = {
    'Green1' : '#7BC242',
    'Green2' : '#5B893E',
    'Green3' : '#447764',
@@ -19,23 +19,20 @@ colors = {
    'Orange2' : '#F47820',
    'Orange3' : '#C28254'
     }
-# 3 sizes, 1, 2, 3
-k = 2
+# below constant K used for scaling down drawing
+K = 2
 # below constants used to adjust for origin discrepancy
-w = -1215/2
-h = -506/2
-sizes = {
+W = -1215/2
+H = -506/2
+# 3 sizes, 1, 2, 3 for S, M, L
+SIZES = {
     1 : 122,
     2 : 138,
     3 : 168
 }
 
 # maps each triangle to coords
-x = 0
-y = 0
-size = 1
-r = 1.73
-tris = {
+TRIS = {
     32 : (538, 226, 2, 'Blue1', 0), # little blue top center
     31 : (538, 280, 2, 'Grey1', 1), # little grey bottom center
     30 : (438, 107, 3, 'Blue2', 1), # big blue top center
@@ -72,13 +69,10 @@ tris = {
 
 
 def main():
-    ###setworldcoordinates(0, 620, 1220, 115)
-    #screensize(canvwidth=1215, canvheight=506)
-    #setup(width=1215*2, height=506*2)
-    speed(00)
+    speed(0)
     def looper():
         for i in range(1, 33):
-            triTuple = tris[i]
+            triTuple = TRIS[i]
             placerator(triTuple[0], triTuple[1])
             if triTuple[4] == 1:
                 makeTri(triTuple[2], triTuple[3], flip=True)
@@ -88,25 +82,17 @@ def main():
     # makes tri given 1/2/3 or Color#
     def makeTri(siz, col, flip='Default'):
         if flip == True:
-            sh.triangleFlip((sizes[siz])/k, colors[col], fill=True)
+            sh.triangleFlip((SIZES[siz]) / K, COLORS[col], fill=True)
         else:
-            sh.triangle((sizes[siz])/k, colors[col], fill=True)
+            sh.triangle((SIZES[siz]) / K, COLORS[col], fill=True)
 
 
     def placerator(xcoord, ycoord):
         up()
-        setx((int(xcoord)+w)/k)
-        sety(-(int(ycoord)+h)/k)
+        setx((int(xcoord)+W) / K)
+        sety(-(int(ycoord)+H) / K)
         down()
 
-    # count the number of triangles that have been made
-    def trackTri():
-        pass
-
-    #makeTri(100, colors['Green1'[0]], colors['Green1'[1]], colors['Green1'[2]])
-    #makeTri(3, 'Orange3')
-    #makeTri(2, 'Green2', flip=True)
-    #makeTri(1, 'Grey4')
     looper()
     hideturtle()
 
