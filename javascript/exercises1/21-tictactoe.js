@@ -14,7 +14,7 @@ function ticTacToe (board) {
   //check diag1
   if (game[0][0] === game[1][1] && game[0][0] === game[2][2] && game[0][0] != null) {
     return game[0][0]
-
+      // or could return row and send to broken out row checking function
   }
   //check diag2
   if (game[2][0] === game[1][1] && game[2][0] === game[0][2] && game[2][0] != null) {
