@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    /*
+    When the clear button is clicked, clear the text field.
+    When the save button is clicked, take the text value inside the text field, and append a new <li> element to the #log with the entered text value.
+    */
+    $(document).ready(function () {
+      $('#clear-button').click(function () {
+        $('#text-field').val(' ');
+      });
+      $('#save-button').click(function () {
+        let text = $('#text-field').val();
+        console.log(text);
+        $('#log').append('<li>' + text.toString() + '</li>');
+        $('#text-field').val(' ');
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <input id="text-field" type="text" name="text">
+    <button id="clear-button">Clear</button>
+    <button id="save-button">Save</button>
+    <ul id="log">
+      <li>Type messages here:</li>
+    </ul>
+  </body>
+</html>
