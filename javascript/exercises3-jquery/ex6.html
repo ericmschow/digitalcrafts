@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo List Exercise</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    /*
+    Make the hide the section the first time the section header is clicked, show it when it is clicked again.
+    */
+    $(document).ready(function () {
+      $('#section-header').click(function() {
+        // Write code here
+        $('#section').toggle($('section').display);
+      });
+    });
+    </script>
+
+    <style>
+    #section-header {
+      background-color: blue;
+      color: white;
+      padding: 5px;
+    }
+    #accordion {
+      width: 400px;
+      background-color: yellow;
+      margin: auto;
+    }
+    #section {
+      padding: 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="accordion">
+      <h3 id="section-header">Section 1</h3>
+      <div id="section">
+        <p>
+        Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+        ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+        amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+        odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
