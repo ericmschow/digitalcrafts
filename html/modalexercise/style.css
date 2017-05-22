@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+/*html, body {
+ margin: 0px;
+ padding: 0px;
+ border: 0px;
+ }*/
+
+#one {
+  float: right;
+
+  margin: .5em;
+}
+
+#two {
+  float: left;
+
+  margin: .5em;
+}
+
+p {
+
+}
+
+h1 {
+
+}
