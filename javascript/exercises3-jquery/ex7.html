@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo List Exercise</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    /*
+    Make a Todo List
+
+    0. Make it so that after entering the task description, in the text field
+    and clicking the "Add Task" button, a new task appears inside the element with the id todo-list.
+    1. the ability to remove tasks (add an x button)
+    2. the ability to check off tasks - strikes them out wo removing (add a checkbox)
+    3. the ability to delete a task
+    4. the ability to edit an existing task
+
+    */
+    $(document).ready(function () {
+      $('#description').val('');
+      $('#add-button').click(function () {
+        $('#todo-list').append("<li><hr><input type='checkbox' class='strike-box'>"
+        +"</input><p class='strikee'>" + $('#description').val()
+        + "</p><br><button class='edit-button'>Edit</button>"
+        +"<input class='editor hidden' type='text' name='editor'></input>"
+        +"<button type='button' class='edit-submit hidden' class='hidden'>Submit</button>"
+        +"<button class='close-button'>X</button></li>");
+        $('#description').val('');
+        $('.close-button').click(function () {
+          $(this).parent().remove();
+        });
+
+        $('.strike-box').click(function () {
+          $(this).parent().toggleClass('struck');
+        });
+
+        $('.edit-button').click(function () {
+          $(this).parent().find("input.editor").toggleClass('hidden');
+          $(this).parent().find("button.edit-submit").toggleClass('hidden');
+        });
+
+
+
+
+      });
+
+      $('.close-button').click(function () {
+        $(this).parent().remove();
+      });
+
+      $('.strike-box').click(function () {
+        $(this).parent().toggleClass('struck');
+      });
+
+      $('.edit-button').click(function () {
+        $(this).parent().find("input.editor").toggleClass('hidden');
+        $(this).parent().find("button.edit-submit").toggleClass('hidden');
+      });
+
+      $('.edit-submit').click(function (){
+        let edit_text = $(this).parent().find('.editor').val();
+        $(this).parent().find('p').text(edit_text);
+        $(this).parent().find("input.editor").toggleClass('hidden');
+        $(this).parent().find("button.edit-submit").toggleClass('hidden');
+      });
+    });
+    </script>
+    <style>
+    #wrapper {
+      max-width: 480px;
+      margin: auto;
+    }
+
+    #description, #search, #todo-list {
+      font-size: 1.5em;
+    }
+    .close-button {
+      color: red;
+      margin: 0;
+      padding: 0;
+      margin-left: 1em;
+    }
+    .close-button:active {
+      background-color: darkgrey;
+    }
+    .hidden {
+      display: none;
+    }
+    .struck p {
+      text-decoration: line-through;
+      color: grey;
+    }
+    .strikee {
+      display: inline;
+      margin-left: .5em;
+      font-size: .9em;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <input id="description" type="text" name="description">
+      <button id="add-button">Add Task</button>
+      <ul id="todo-list">
+        <li>
+          <input type='checkbox' class='strike-box'></input><p class='strikee struck'>Feed the cat</p>
+          <br>
+          <button type='button' class='edit-button'>Edit</button>
+          <input class="editor hidden" type="text" name="editor"></input>
+          <button type='button' class="edit-submit hidden" class="hidden">Submit</button>
+          <button type='button' class='close-button'>X</button>
+
+        </li>
+
+      </ul>
+    </div>
+  </body>
+</html>
