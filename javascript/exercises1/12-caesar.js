@@ -5,7 +5,7 @@ function caesar(string, offset) {
     let charcode = char.charCodeAt(0)
     if (charcode >= 65 && charcode < 91 || charcode >= 97 && charcode < 123) {
       let newcharcode = (charcode + offset)
-      if (!(newcharcode >= 65 && newcharcode < 91 || newcharcode >= 97 && newcharcode < 123) ) {
+      if (newcharcode > 122 || (newcharcode >= 91 && newcharcode < 97) ) {
         newcharcode = newcharcode - 26;
       }
       var newchar = String.fromCharCode(newcharcode)
@@ -19,4 +19,4 @@ function caesar(string, offset) {
   return cipher.join('')
 }
 
-console.log(caesar('abcdefghijklmnopqrstuvwxyz'.toUpperCase(), 13))
+console.log(caesar('abcdefghijklmnopqrstuvwxyz./?,<>;{}][\';\']\''.toUpperCase(), 1))
