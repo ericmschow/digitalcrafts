@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blackjack</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="blackjack.js"></script>
+  <link rel='stylesheet' type="text/css" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+  <body>
+
+    <h1>Blackjack <span class='littler'> By <a>Eric</span></h1>
+    <div id="replay" class='hidden'>
+      <h2>Would you like to play again?</h2>
+      <button id='replay-yes'>Yes</button>
+      <button id='replay-no'>No</button>
+    </div>
+    <div id='modal-blurrer'>
+      <div id="table">
+
+        <div id="messages"><p>Welcome to Blackjack!</p></div>
+          <label>Dealer: </label>
+          <label id="dealer-points" class="points"></label>
+        <div id="dealer-hand" class="hand">
+        </div>
+          <label>Player: </label>
+          <label id="player-points" class="points"></label>
+        <div id="player-hand" class="hand">
+        </div>
+        <div class="buttons">
+          <button id="deal-button">Deal</button>
+          <button id="hit-button" class='hidden'>Hit</button>
+          <button id="stand-button" class='hidden'>Stand</button>
+          <button id="next-button" class='hidden'>Next</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
