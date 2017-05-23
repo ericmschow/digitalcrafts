@@ -30,21 +30,32 @@ function calculatePoints(hand) {
   let value = 0;
   let points = 0;
   let ace = false;
-  forEach (card in hand) {
+  hand.forEach(function(card){
     if (card.point === 1) {value = 11; ace = true}
     else if (card.point === 11) {value = 10}
     else if (card.point === 12) {value = 10}
     else if (card.point === 13) {value = 10}
     else {value = card.point}
     points += value;
-  };
+  });
   if (points > 21) {
     if (ace === true) {
       points -= 10;
     };
+  }
+  else if (points === 21) {
+    // win
+  }
+  else {
+    alert('Error in calculatePoints ace checking function')
   };
-  return points;
-}
+  if bustChecker(hand) {
+    // bust
+  }
+  else {
+    return points;
+  };
+};
 
 function bustChecker(hand) {
   points = calculatePoints(hand);
@@ -71,7 +82,7 @@ function givePlayerCard() {
   card = deck.pop()
   if (card !== undefined) {
     let cardImg = new Image();
-    cardImg.id = '2 of clubs';
+    cardImg.id = card.point + "-of-" + card.suit;
     cardImg.src = getCardImageUrl(card)
     cardImg.width = 50;
     cardImg.height = 75;
