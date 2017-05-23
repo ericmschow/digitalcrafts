@@ -8,6 +8,8 @@ var deck = [];
 var discard = [];
 var playerHand = [];
 var dealerHand = [];
+var playerPoints = 0;
+var dealerPoints = 0;
 
 function clearDeck(){
   deck = [];
@@ -37,8 +39,125 @@ function shuffleDeck(){
   deck = shuffledDeck;
 };
 
-function calculatePoints(hand) {
+function calculatePointsOld() {
   let value = 0;
+  let points = 0;
+  let ace = false;
+  let hands = [dealerHand, playerHand];
+  let scores = [dealerPoints, playerPoints];
+  for (i = 0; i < 2; i++) {
+    let hand = hands[i];
+    hand.forEach(function(card){
+      if (card.point === 1) {value = 11; ace = true}
+      else if (card.point === 11) {value = 10}
+      else if (card.point === 12) {value = 10}
+      else if (card.point === 13) {value = 10}
+      else {value = card.point};
+      points += value;
+    });
+
+    if (points > 21) {
+      if (ace === true) {
+        points -= 10;
+        if (bustChecker(points)) {
+          // bust
+          alert('Busted!');
+          clearTable()
+        }
+        else {
+        }
+      };
+    }
+    else if (points === 21) {
+      // win
+      alert('Win!');
+      clearTable();
+    }
+    else if (points < 21) {
+
+        if (i === 0){
+          dealerPoints = points;
+        }
+        else if (i === 1){
+          playerPoints = points;
+        }
+        else {alert('error in points checker')}
+
+      }
+    else {
+      alert('Error in calculatePoints ace checking function')
+    };
+    if (bustChecker(hand)) {
+      // bust
+      alert('Bust!')
+    }
+  };
+  console.log(dealerPoints + " is dealerPoints");
+  console.log(playerPoints + " is playerPoints");
+  $('#dealer-points').html(dealerPoints);
+  $('#player-points').html(playerPoints);
+};
+
+// runs calculatePoints and ends game if over
+function checkState() {
+  if (calculatePoints() === -100) {
+    alert("You lose!"); // alert is quite temporary
+    // playerLose() for future scorekeeping
+    clearTable();
+  }
+  else if (calculatePoints() === 100) {
+    alert("You win!"); // alert is quite temporary
+    // playerWin() for future scorekeeping
+    clearTable();
+  }
+  else {};
+};
+
+// master points calculation function
+function calculatePoints() {
+  let dealerArray = sumCards(dealerHand); // [points, ace-flag]
+  let playerArray = sumCards(playerHand);
+  dealerPoints = dealerArray[0];
+  dealerAce = dealerArray[1];
+  playerPoints = playerArray[0];
+  playerAce = playerArray[1];
+  
+  if (dealerAce) {
+    console.log('dealer has ace');
+    if (bustChecker(dealerPoints)) {
+      dealerPoints -= 10;
+    }
+  };
+  if (playerAce) {
+    console.log('player has ace');
+    if (bustChecker(playerPoints)) {
+      playerPoints -= 10;
+    }
+  };
+  // check player busting first because house wins ties aka casinos suck
+  if (bustChecker(playerPoints)) {
+    $('#dealer-points').html(dealerPoints);
+    $('#player-points').html(playerPoints);
+    // playerLose();
+    return -100;
+  };
+  if (bustChecker(dealerPoints)) {
+    $('#dealer-points').html(dealerPoints);
+    $('#player-points').html(playerPoints);
+    // playerWin();
+    return 100;
+  };
+
+
+
+  console.log(dealerPoints + " is dealerPoints");
+  console.log(playerPoints + " is playerPoints");
+  $('#dealer-points').html(dealerPoints);
+  $('#player-points').html(playerPoints);
+};
+
+// returns raw sum of card values and ace flag = [points, ace-flag]
+function sumCards(hand) {
   let points = 0;
   let ace = false;
   hand.forEach(function(card){
@@ -46,30 +165,15 @@ function calculatePoints(hand) {
     else if (card.point === 11) {value = 10}
     else if (card.point === 12) {value = 10}
     else if (card.point === 13) {value = 10}
-    else {value = card.point}
+    else {value = card.point};
     points += value;
   });
-  if (points > 21) {
-    if (ace === true) {
-      points -= 10;
-    };
-  }
-  else if (points === 21) {
-    // win
-  }
-  else {
-    alert('Error in calculatePoints ace checking function')
-  };
-  if (bustChecker(hand)) {
-    // bust
-  }
-  else {
-    return points;
-  };
-};
+  return [points, ace]
+}
 
-function bustChecker(hand) {
-  points = calculatePoints(hand);
+// returns true if score over 21
+function bustChecker(points) {
+
   if (points > 21) {
     return true;
   }
@@ -89,6 +193,7 @@ function getCardImageUrl(card) {
   return url;
 }
 
+// pops card from deck, displays and adds to hand. calls shuffle if no cards left
 function givePlayerCard() {
   card = deck.pop()
   if (card !== undefined) {
@@ -100,7 +205,6 @@ function givePlayerCard() {
     playerHand.push(card);
     $('#player-hand').append(cardImg);
     cardImg = {};
-
   }
   else { // if out of cards
     clearTable(); //debug
@@ -109,6 +213,7 @@ function givePlayerCard() {
   };
 };
 
+// pops card from deck, displays and adds to hand. calls shuffle if no cards left
 function giveDealerCard() {
   card = deck.pop()
   if (card !== undefined){
@@ -124,7 +229,6 @@ function giveDealerCard() {
   else { // if out of cards
     clearTable(); //debug
     shuffleDeck();
-
     giveDealerCard();
   }
 };
@@ -132,7 +236,10 @@ function giveDealerCard() {
 function clearTable(){
   dealerHand.forEach(function (card) {discard.push(card);});
   playerHand.forEach(function (card) {discard.push(card);});
-  // remove card images
+  $('#dealer-hand img').remove();
+  $('#player-hand img').remove();
+  $('#dealer-points').html('');
+  $('#player-points').html('');
 }
 
 function printDeck() { // debug
@@ -144,16 +251,23 @@ $(document).ready(function () {
   generateDeck();
   shuffleDeck();
 
+  $('#play-button').click(function () {
+
+  });
+
   $('#deal-button').click(function () {
     giveDealerCard();
     givePlayerCard();
     giveDealerCard();
     givePlayerCard();
+    checkState();
   });
 
   $('#hit-button').click(function () {
     givePlayerCard();
+    checkState();
     giveDealerCard();
+    checkState();
   });
 
   // $('#stand-button').click(function () {
@@ -161,8 +275,8 @@ $(document).ready(function () {
   // });
 
   $('#stand-button').click(function () {
-
-    printDeck();
+    giveDealerCard();
+    checkState();
   });
 
 
