@@ -5,6 +5,7 @@
 // alert('loaded')
 
 var deck = [];
+var discard = [];
 var playerHand = [];
 var dealerHand = [];
 
@@ -20,10 +21,20 @@ function generateDeck(){
     else if (i === 2) {suitvar = 'spades'}
     else if (i === 3) {suitvar = 'clubs'};
     for (let i = 1; i < 14; i++) {
-      card = {point: i, suit: suitvar}
-      deck.push(card);
+      card = {point: i, suit: suitvar};
+      discard.push(card);
     };
   };
+};
+
+function shuffleDeck(){
+  let shuffledDeck = [];
+  while (discard.length !== 0){
+    let card = discard.splice(Math.floor(Math.random() * discard.length), 1)[0];
+    console.log(card.point, card.suit)
+    shuffledDeck.push(card);
+  };
+  deck = shuffledDeck;
 };
 
 function calculatePoints(hand) {
@@ -49,7 +60,7 @@ function calculatePoints(hand) {
   else {
     alert('Error in calculatePoints ace checking function')
   };
-  if bustChecker(hand) {
+  if (bustChecker(hand)) {
     // bust
   }
   else {
@@ -91,8 +102,10 @@ function givePlayerCard() {
     cardImg = {};
 
   }
-  else {
-    alert('Out of cards')
+  else { // if out of cards
+    clearTable(); //debug
+    shuffleDeck();
+    givePlayerCard();
   };
 };
 
@@ -108,17 +121,28 @@ function giveDealerCard() {
     $('#dealer-hand').append(cardImg);
     cardImg = {};
   }
-  else {
-    alert('Out of cards');
+  else { // if out of cards
+    clearTable(); //debug
+    shuffleDeck();
+
+    giveDealerCard();
   }
 };
 
-function printDeck() {
+function clearTable(){
+  dealerHand.forEach(function (card) {discard.push(card);});
+  playerHand.forEach(function (card) {discard.push(card);});
+  // remove card images
+}
+
+function printDeck() { // debug
   console.log(deck);
 };
+
 $(document).ready(function () {
 
   generateDeck();
+  shuffleDeck();
 
   $('#deal-button').click(function () {
     giveDealerCard();
