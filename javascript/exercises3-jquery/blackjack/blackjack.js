@@ -32,8 +32,8 @@ class Card {
 };
 
 class Hand {
-  constructor (player) {
-    this.player = player;
+  constructor (playerFlag) {
+    this.player = playerFlag;
     this.cards = [];
     this.points = 0;
     this.hole = {};
@@ -67,14 +67,16 @@ class Hand {
   flipHole(){
     let card = this.hole;
     if (card !== undefined){
-      $('#hole-card').remove();
-      let cardImg = new Image();
-      cardImg.id = card.point + "-of-" + card.suit;
-      cardImg.src = card.url;
-      cardImg.width = 50;
-      cardImg.height = 75;
+      //$('#hole-card').remove();
+      //let cardImg = new Image();
+      //cardImg.id = card.point + "-of-" + card.suit;
+      //cardImg.src = card.url;
+      //cardImg.width = 50;
+      //cardImg.height = 75;
+      $('#hole-card').attr('src', card.url);
+      $('#hole-card').attr('alt', card.point + "-of-" + card.suit);
       dealerHand.cards.push(card);
-      $('#dealer-hand').prepend(cardImg);
+      //$('#dealer-hand').prepend(cardImg);
     }
     else {
       alert('Hole card undefined in flipHole function');
@@ -194,11 +196,11 @@ class Deck {
       cardImg.id = card.id;
       cardImg.alt = card.id;
       cardImg.src = card.url;
-      cardImg.width = 50;
-      cardImg.height = 75;
+      cardImg.width = 100;
+      cardImg.height = 150;
       return [card, cardImg];
     }
-    else { // if out of cards
+    else { // if out of cards then do above
     //  clearTable(); //debug
       this.shuffleDeck();
       card = this.deck.pop();
@@ -206,8 +208,8 @@ class Deck {
       cardImg.id = card.id;
       cardImg.alt = card.id;
       cardImg.src = card.url;
-      cardImg.width = 50;
-      cardImg.height = 75;
+      cardImg.width = 100;
+      cardImg.height = 150;
       return [card, cardImg];
     };
   };
@@ -267,8 +269,13 @@ function checkState() {
     playerStands();
   }
 
+  else if (dealerStanding == true && playerStanding == true){
+    roundEnd(3);
+  }
+
   else if ((dealerHand.points >= 17 && playerStanding === true) || (dealerHand.cards.length === 5)) {
-    dealerstanding = dealerStands();
+    dealerStanding = dealerStands();
+    checkState();
   }
 
   else if (dealerHand.points === 21 && playerHand.points === 21) {
@@ -290,16 +297,15 @@ function checkState() {
   else if (playerHand.points === 21) {
     if (playerHand.cards.length === 2) {
       printMessage('You stand with your blackjack.');
+      playerStands();
     }
     else {
-      printMessage('You stand at 21.')
+      printMessage('You stand at 21.');
+      playerStands();
     };
-    playerStands();
   }
 
-  else if (dealerStanding == true && playerStanding == true){
-    roundEnd(3);
-  }
+
   // else {alert('error in checkState')};
 };
 
@@ -502,7 +508,6 @@ function playerStands(){
   $('#hit-button, #stand-button').attr('class','hidden');
   $('#next-button').attr('class','');
   dealerHand.flipHole();
-  checkState();
 };
 
 function printMessage(text){
@@ -537,10 +542,10 @@ function roundEnd(val) {
     printMessage("Congratulations, you got a blackjack!")
   }
   else if (val === 3) {
-    if (dealerPoints > playerPoints) {
+    if (dealerHand.points > playerHand.points) {
       roundEnd(-1);
     }
-    else if (playerPoints > dealerPoints) {
+    else if (playerHand.points > dealerHand.points) {
       roundEnd(1);
     }
     else {roundEnd(0)}; // this should not be called
@@ -568,10 +573,13 @@ $(document).ready(function () {
   $('#stand-button').click(function () {
     printMessage("You stand at "+ playerHand.points + "!");
     playerStands();
+    checkState();
   });
 
   $('#next-button').click(function () {
-    dealerHand.addCard();
+    if (!dealerStanding) {
+      dealerHand.addCard();
+    };
     checkState();
   });
 
