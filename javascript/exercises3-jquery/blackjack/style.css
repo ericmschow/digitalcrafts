@@ -25,7 +25,7 @@ h1 {
 
 #messages p {
   padding-left: 3em;
-  color: #773311;
+  color: #000;
   font-size: 1.3em;
 }
 
@@ -41,8 +41,12 @@ h1 {
   background: -moz-radial-gradient(top right,#e1b876,#eeeeee); /*Fx 3.6-15*/
   background: radial-gradient(top right, #e1b876, #eeeeee); /*Standard*/
   border-radius: 10px;
-  border: 6px solid #773311;
+  border: 3px solid black;
   box-shadow: 8px 8px 8px 5px rgba(0, 0, 0, 0.5);
+}
+
+#radios {
+  display:inline;
 }
 
 #table > div {
@@ -51,14 +55,16 @@ h1 {
 
 label {
   margin: .5em 1em;
+  color: #000;
+  font-size: 1.2em;
 }
 
 .hand {
-  background: #773311; /* Old Browsers */
-  background: -webkit-radial-gradient(center,#773311,#461f0b); /*Safari 5.1-6*/
-  background: -o-radial-gradient(center,#773311,#461f0b); /*Opera 11.1-12*/
-  background: -moz-radial-gradient(center,#773311,#461f0b); /*Fx 3.6-15*/
-  background: radial-gradient(ellipse at center, #773311, #461f0b); /*Standard*/
+  background: #000; /* Old Browsers */
+  background: -webkit-radial-gradient(center,#333,#000); /*Safari 5.1-6*/
+  background: -o-radial-gradient(center,#333,#000); /*Opera 11.1-12*/
+  background: -moz-radial-gradient(center,#333,#000); /*Fx 3.6-15*/
+  background: radial-gradient(ellipse at center, #333, #000); /*Standard*/
   height: 70px;
   padding: 3px;
 }
@@ -76,21 +82,21 @@ label {
   margin: 0 1em;
   padding: .125em .25em;
   border-radius: 10px;
-  border: 2px solid #773311;
+  border: 2px solid black;
   background-color: #E1B876;
   color: #fff;
   letter-spacing: .05em;
 }
 
 .buttons > button:hover {
-  color: #773311;
+  color: #fff;
 }
 .buttons > button:active {
   color:#afa;
 }
 
 .hidden {
-  display:none;
+  display:none !important;
 }
 
 .blurry {

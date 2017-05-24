@@ -9,7 +9,8 @@ var discard = [];
 var hole = {};
 var playerHand = [];
 var dealerHand = [];
-var standing = false;
+var playerStanding = false;
+var dealerStanding = false;
 
 function clearDeck(){
   deck = [];
@@ -40,78 +41,42 @@ function shuffleDeck(){
   deck = shuffledDeck;
 };
 
-// deprecated because look at it but leaving here to steal from
-function calculatePointsOld() {
-  let value = 0;
-  let points = 0;
-  let ace = false;
-  let hands = [dealerHand, playerHand];
-  let scores = [dealerPoints, playerPoints];
-  for (i = 0; i < 2; i++) {
-    let hand = hands[i];
-    hand.forEach(function(card){
-      if (card.point === 1) {value = 11; ace = true}
-      else if (card.point === 11) {value = 10}
-      else if (card.point === 12) {value = 10}
-      else if (card.point === 13) {value = 10}
-      else {value = card.point};
-      points += value;
-    });
-
-    if (points > 21) {
-      if (ace === true) {
-        points -= 10;
-        if (bustChecker(points)) {
-          // bust
-          alert('Busted!');
-          clearTable()
-        }
-        else {
-        }
-      };
-    }
-    else if (points === 21) {
-      // win
-      alert('Win!');
-      clearTable();
-    }
-    else if (points < 21) {
-
-        if (i === 0){
-          dealerPoints = points;
-        }
-        else if (i === 1){
-          playerPoints = points;
-        }
-        else {alert('error in points checker')}
-
-      }
-    else {
-      alert('Error in calculatePoints ace checking function')
-    };
-    if (bustChecker(hand)) {
-      // bust
-      alert('Bust!')
-    }
-  };
-  console.log(dealerPoints + " is dealerPoints");
-  console.log(playerPoints + " is playerPoints");
-  $('#dealer-points').html(dealerPoints);
-  $('#player-points').html(playerPoints);
-};
-
 // runs calculatePoints and ends game if over
 function checkState() {
   if (calculatePoints() === -100) {
-    //printMessage("You lose!");
+    //player busts
     roundEnd(-1);
   }
   else if (calculatePoints() === 100) {
-    //printMessage("You win!");
+    // dealer busts
     roundEnd(1);
   }
-  else if (dealerPoints >= 17 && standing === true) {
+  else if (dealerPoints >= 17 && playerStanding === true) {
     dealerStands();
+  }
+
+  else if (dealerPoints === 21 && playerPoints === 21) {
+    if (dealerHand.length === playerHand.length) {
+      roundEnd(0);
+    }
+    else if (dealerHand.length === 2 && playerHand.length > 2) { //blackjacks win ties
+      roundEnd(-1);
+    }
+    else if (playerHand.length === 2 && dealerHand.length > 2) { //blackjacks win ties
+      roundEnd(1);
+    }
+  }
+
+  else if (dealerPoints === 21) {
+    roundEnd(-1);
+  }
+
+  else if (playerPoints === 21) {
+    roundEnd(2);
+  }
+
+  else if (dealerStanding == true && playerStanding == true){
+    roundEnd(3);
   }
   // else {alert('error in checkState')};
 };
@@ -238,6 +203,18 @@ function getCardImageUrl(card) {
   return url;
 }
 
+function deal(){
+  $('#deal-button, #radios').attr('class','hidden');
+  $('#hit-button, #stand-button').attr('class','');
+  printMessage('Good luck!');
+  clearTable();
+  giveHoleCard();
+  givePlayerCard();
+  giveDealerCard();
+  givePlayerCard();
+  checkState();
+}
+
 // pops card from deck, displays and adds to hand. calls shuffle if no cards left
 function givePlayerCard() {
   card = deck.pop()
@@ -322,7 +299,9 @@ function dealerStands(){
 }
 
 function playerStands(){
-  standing = true;
+  playerStanding = true;
+  $('#hit-button, #stand-button').attr('class','hidden');
+  $('#next-button').attr('class','');
   flipHole();
   giveDealerCard();
   checkState();
@@ -332,29 +311,41 @@ function printMessage(text){
   $('#messages p').html(text);
 };
 
+// resets variables, hands, clears images
 function clearTable(){
   dealerHand.forEach(function (card) {discard.push(card);});
   playerHand.forEach(function (card) {discard.push(card);});
-  dealerHand = [];
-  playerHand = [];
-  var playerPoints = 0;
-  var dealerPoints = 0;
-  standing = false;
-  $('#dealer-hand img').remove();
-  $('#player-hand img').remove();
-  $('#dealer-points').html('');
-  $('#player-points').html('');
+  dealerHand = []; playerHand = [];
+  var playerPoints = 0; var dealerPoints = 0;
+  playerStanding = false; dealerStanding = false;
+  $('#dealer-hand img').remove(); $('#player-hand img').remove();
+  $('#dealer-points').html(''); $('#player-points').html('');
 }
 
-// -1 for player loss, 1 for win
+// -1 for player loss,0 for tie, 1 for win, 2 for blackjack, 3 for math
 function roundEnd(val) {
   $('#deal-button').attr('class','');
   $('#hit-button, #stand-button, #next-button').attr('class','hidden');
   if (val === -1) {
     printMessage("Sorry, you lost.")
   }
+  else if (val === 0) {
+    printMessage("You tied with the dealer.")
+  }
   else if (val === 1) {
     printMessage("Congratulations, you won!")
+  }
+  else if (val === 2) {
+    printMessage("Congratulations, you got a blackjack!")
+  }
+  else if (val === 3) {
+    if (dealerPoints > playerPoints) {
+      roundEnd(-1);
+    }
+    else if (playerPoints > dealerPoints) {
+      roundEnd(1);
+    }
+    else {roundEnd(0)}; // this should not be called
   }
 };
 
@@ -367,28 +358,14 @@ $(document).ready(function () {
   shuffleDeck();
   printMessage("How about some blackjack?")
 
-  $('#deal-button').click(function () {
-    $('#deal-button').attr('class','hidden');
-    $('#hit-button, #stand-button').attr('class','');
-    printMessage('Good luck!');
-    clearTable();
-    giveHoleCard();
-    givePlayerCard();
-    giveDealerCard();
-    givePlayerCard();
-    checkState();
-  });
+  $('#deal-button').click(deal);
 
   $('#hit-button').click(function () {
     givePlayerCard();
     checkState();
   });
 
-  $('#stand-button').click(function () {
-    $('#hit-button, #stand-button').attr('class','hidden');
-    $('#next-button').attr('class','');
-    playerStands();
-  });
+  $('#stand-button').click(playerStands);
 
   $('#next-button').click(function () {
     giveDealerCard();
