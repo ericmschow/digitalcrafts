@@ -61,10 +61,10 @@ label {
 
 .hand {
   background: #000; /* Old Browsers */
-  background: -webkit-radial-gradient(center,#333,#000); /*Safari 5.1-6*/
-  background: -o-radial-gradient(center,#333,#000); /*Opera 11.1-12*/
-  background: -moz-radial-gradient(center,#333,#000); /*Fx 3.6-15*/
-  background: radial-gradient(ellipse at center, #333, #000); /*Standard*/
+  background: -webkit-radial-gradient(center,#333,#111); /*Safari 5.1-6*/
+  background: -o-radial-gradient(center,#333,#111); /*Opera 11.1-12*/
+  background: -moz-radial-gradient(center,#333,#111); /*Fx 3.6-15*/
+  background: radial-gradient(ellipse at center, #333, #111); /*Standard*/
   height: 70px;
   padding: 3px;
 }
@@ -84,12 +84,12 @@ label {
   border-radius: 10px;
   border: 2px solid black;
   background-color: #E1B876;
-  color: #fff;
+  color: #000;
   letter-spacing: .05em;
 }
 
 .buttons > button:hover {
-  color: #fff;
+  background-color: #fec;
 }
 .buttons > button:active {
   color:#afa;
