@@ -10,7 +10,7 @@ body {
   background: url("images/background2.jpeg");
   background-color: black;
   background-position: center;
-  background-size: 110%;
+  background-size: 150%;
   background-repeat: no-repeat;
 }
 
@@ -44,6 +44,7 @@ h1 {
   border-radius: 10px;
   border: 3px solid black;
   box-shadow: 8px 8px 8px 5px rgba(0, 0, 0, 0.5);
+  min-width: 700px;
 }
 
 #radios {

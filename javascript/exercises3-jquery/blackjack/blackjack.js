@@ -1,16 +1,3 @@
-// "deal-button">
-// "hit-button">
-// "stand-button">
-
-// alert('loaded')
-
-//var deck = [];
-//var discard = [];
-//var hole = {};
-//var playerHand = [];
-//var dealerHand = [];
-var playerStanding = false;
-var dealerStanding = false;
 
 class Card {
   constructor (point, suit) {
@@ -215,40 +202,6 @@ class Deck {
   };
 };
 
-// added to deck class
-// function clearDeck(){
-//   deck = [];
-// };
-
-// added to deck class
-/*function generateDeck(){
-  let suitvar = 'default';
-  for (let i = 0; i < 4; i++) {
-    if (i === 0) {suitvar = 'hearts'}
-    else if (i === 1) {suitvar = 'diamonds'}
-    else if (i === 2) {suitvar = 'spades'}
-    else if (i === 3) {suitvar = 'clubs'};
-    for (let i = 1; i < 14; i++) {
-      card = {point: i, suit: suitvar};
-      discard.push(card);
-    };
-  };
-};
-*/
-//added to deck class
-/*
-function shuffleDeck(){
-  printMessage("Deck shuffled!")
-  let shuffledDeck = [];
-  while (discard.length !== 0){
-    let card = discard.splice(Math.floor(Math.random() * discard.length), 1)[0];
-    console.log(card.point, card.suit)
-    shuffledDeck.push(card);
-  };
-  deck = shuffledDeck;
-};
- */
-
 // runs calculatePoints and ends game if over
 function checkState() {
   let dPoints = dealerHand.calculatePoints();
@@ -256,6 +209,11 @@ function checkState() {
   $('#dealer-points').html(dealerHand.points);
   $('#player-points').html(playerHand.points);
 
+  /* ORDER OF STATEMENTS
+  Player bust > Dealer bust > Player 5 cards > both standing > dealer 17+
+  > both 21 (resolved by hand size) > dealer 21 > player 21
+
+  */
   if (pPoints === -100) {
     //player busts
     roundEnd(-1);
@@ -304,102 +262,8 @@ function checkState() {
       playerStands();
     };
   }
-
-
   // else {alert('error in checkState')};
 };
-
-// master points calculation function
-/* function calculatePoints() {
-  let dealerArray = sumCards(dealerHand); // [points, ace-flag1, 2, 3, 4]
-  let playerArray = sumCards(playerHand);
-
-  dealerPoints = dealerArray[0];
-  dealerAce1 = dealerArray[1];
-  dealerAce2 = dealerArray[2];
-  dealerAce3 = dealerArray[3];
-  dealerAce4 = dealerArray[4];
-
-  playerPoints = playerArray[0];
-  playerAce1 = playerArray[1];
-  playerAce2 = playerArray[2];
-  playerAce3 = playerArray[3];
-  playerAce4 = playerArray[4];
-
-  if (dealerAce1) {
-    if (bustChecker(dealerPoints)) {
-      dealerPoints -= 10;
-    }
-  };
-  if (dealerAce2) {
-    if (bustChecker(dealerPoints)) {
-      dealerPoints -= 10;
-    }
-  };
-  if (dealerAce3) {
-    if (bustChecker(dealerPoints)) {
-      dealerPoints -= 10;
-    }
-  };
-  if (dealerAce4) {
-    if (bustChecker(dealerPoints)) {
-      dealerPoints -= 10;
-    }
-  };
-  if (playerAce1) {
-    if (bustChecker(playerPoints)) {
-      playerPoints -= 10;
-    }
-  };
-  if (playerAce2) {
-    if (bustChecker(playerPoints)) {
-      playerPoints -= 10;
-    }
-  };
-  if (playerAce3) {
-    if (bustChecker(playerPoints)) {
-      playerPoints -= 10;
-    }
-  };
-  if (playerAce4) {
-    if (bustChecker(playerPoints)) {
-      playerPoints -= 10;
-    }
-  };
-  // check player busting first because house wins ties aka casinos suck
-  if (bustChecker(playerPoints)) {
-    $('#dealer-points').html(dealerPoints);
-    $('#player-points').html(playerPoints);
-    // playerLose();
-    return -100;
-  };
-  if (bustChecker(dealerPoints)) {
-    $('#dealer-points').html(dealerPoints);
-    $('#player-points').html(playerPoints);
-    // playerWin();
-    return 100;
-  };
-
-
-
-  console.log(dealerPoints + " is dealerPoints");
-  console.log(playerPoints + " is playerPoints");
-  $('#dealer-points').html(dealerPoints);
-  $('#player-points').html(playerPoints);
-};
-*/
-
-
-// returns true if score over 21 MOVED TO HAND OBJECT
-// function bustChecker(points) {
-//
-//   if (points > 21) {
-//     return true;
-//   }
-//   else {
-//     return false;
-//   }
-// }
 
 function deal(){
   $('#deal-button, #radios').attr('class','hidden');
@@ -413,91 +277,6 @@ function deal(){
   checkState();
 }
 
-// pops card from deck, displays and adds to hand. calls shuffle if no cards left
-/* moved to deck and hand class
-function givePlayerCard() {
-  card = deck.pop()
-  if (card !== undefined) {
-    let cardImg = new Image();
-    cardImg.id = card.point + "-of-" + card.suit;
-    cardImg.src = getCardImageUrl(card)
-    cardImg.width = 50;
-    cardImg.height = 75;
-    playerHand.push(card);
-    $('#player-hand').append(cardImg);
-    cardImg = {};
-  }
-  else { // if out of cards
-  //  clearTable(); //debug
-    shuffleDeck();
-    givePlayerCard();
-  };
-};
-*/
-
-// pops card form deck but does not display
-/* moved to hand class
-function giveHoleCard() {
-  card = deck.pop()
-  if (card !== undefined){
-    let cardImg = new Image();
-    cardImg.id = "hole-card";
-    cardImg.src = 'images/card_back.png'
-    cardImg.width = 50;
-    cardImg.height = 75;
-    $('#dealer-hand').append(cardImg);
-    cardImg = {};
-    hole = card;
-    console.log(hole);
-  }
-  else { // if out of cards
-  //  clearTable(); //debug
-    shuffleDeck();
-    giveHoleCard();
-  }
-};
-
-*/
-// pops card from deck, displays and adds to hand. calls shuffle if no cards left
-/* moved to hand and deck
-function giveDealerCard() {
-  card = deck.pop()
-  if (card !== undefined){
-    let cardImg = new Image();
-    cardImg.id = card.point + "-of-" + card.suit;
-    cardImg.src = getCardImageUrl(card)
-    cardImg.width = 50;
-    cardImg.height = 75;
-    dealerHand.push(card);
-    $('#dealer-hand').append(cardImg);
-    cardImg = {};
-  }
-  else { // if out of cards
-  //  clearTable(); //debug
-    shuffleDeck();
-    giveDealerCard();
-  }
-};
-
-moved to Hand
-function flipHole(){
-  card = hole
-  if (card !== undefined){
-    $('#hole-card').remove();
-    let cardImg = new Image();
-    cardImg.id = card.point + "-of-" + card.suit;
-    cardImg.src = getCardImageUrl(card)
-    cardImg.width = 50;
-    cardImg.height = 75;
-    dealerHand.push(card);
-    $('#dealer-hand').prepend(cardImg);
-  }
-  else {
-    alert('Hole card undefined in flipHole function');
-  }
-};
-
-*/
 function dealerStands(){
   printMessage("Dealer stands at "+ dealerHand.points +"!");
   return true;
@@ -557,6 +336,8 @@ function printDeck() { // debug
 };
 
 $(document).ready(function () {
+  var playerStanding = false;
+  var dealerStanding = false;
   deck = new Deck();
   playerHand = new Hand(true); // true sets player flag
   dealerHand = new Hand(false);
