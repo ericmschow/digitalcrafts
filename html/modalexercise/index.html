@@ -1,0 +1,148 @@
+<!-- python3 -m http.server 8000 # command to open local webserver -->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Modal Exercise</title>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <style>
+      .clearfix {
+        clear:both;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+        height: auto;
+      }
+      h1, h2 {
+        padding: 0;
+        margin: 0;
+      }
+      .blurrer {
+        z-index: 10;
+        /*background-color: #555;*/
+        opacity: .8;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        filter: brightness(1.25) blur(3px);
+      }
+      .modal-wrapper {
+        position: fixed;
+        top: 40%;
+        height: 60%;
+        width: 100%;
+        z-index: 100;
+
+
+      }
+      .modal-dialog {
+        border: 2px solid black;
+        border-radius: 10px;
+        margin: auto;
+        width: 350px;
+        height: 150px;
+        background-color: white;
+        box-shadow: 10px 5px 5px black;
+      }
+      .modal-header {
+        background-color: darkblue;
+        color: grey;
+        padding-left: 1em;
+        font-size: 2em;
+        border-top: 2px solid black;
+        /*border-bottom: 0 solid transparent;*/
+        border-radius: 5px;
+      }
+      .modal-content, .modal-buttons {
+        background-color: white;
+      }
+      .modal-content {
+        padding-left: .25em;
+        padding-right: .25em;
+      }
+      .modal-buttons {
+        padding-left: 120px;
+
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="modal-wrapper">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <label class="modal-title">Hello</label>
+        </div>
+        <div class="modal-content">
+          <p>
+            Would you like to subscribe to our email newsletter?
+          </p>
+        </div>
+        <div class="modal-buttons">
+          <button>Ok</button>
+          <button>Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class=blurrer>
+    <h1>HTML Ipsum Presents</h1>
+
+    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+    <h2>Header Level 2</h2>
+
+    <ol>
+       <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+       <li>Aliquam tincidunt mauris eu risus.</li>
+    </ol>
+
+    <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+    <h3>Header Level 3</h3>
+
+    <ul>
+       <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+       <li>Aliquam tincidunt mauris eu risus.</li>
+    </ul>
+
+    <pre><code>
+    #header h1 a {
+        display: block;
+        width: 300px;
+        height: 80px;
+    }
+    </code></pre>
+    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+    <h2>Header Level 2</h2>
+
+    <ol>
+       <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+       <li>Aliquam tincidunt mauris eu risus.</li>
+    </ol>
+
+    <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+    <h3>Header Level 3</h3>
+
+    <ul>
+       <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+       <li>Aliquam tincidunt mauris eu risus.</li>
+    </ul>
+
+    <pre><code>
+    #header h1 a {
+        display: block;
+        width: 300px;
+        height: 80px;
+    }
+    </code></pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+* {
+    padding:0; margin:0;
+    box-sizing: border-box;
+    /*border: 1px solid black;*/
+}
+
+div {
+  /*border: 1px solid red;*/
+}
+
+html, body {
+    height:100%;
+    width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+p {
+  font-family: 'PT Serif', serif;
+  line-height: 1.8em;
+}
+
+.head {
+  font-family: 'Roboto', sans-serif;
+  padding-top: 3em;
+  position: relative;
+}
+
+#delta {
+  margin: 0 auto;
+  width: 20%;
+  text-align: center;
+  font-size: 1.5em;
+  color: #999;
+  display: block;
+  clear: left;
+}
+#login {
+  color: limegreen;
+  position: absolute;
+  right: 9em;
+}
+
+#login:hover {
+  text-decoration: underline;
+}
+
+#followhead {
+  position: absolute;
+  right: 5em;
+}
+
+img {
+  display: block;
+  margin: auto;
+  padding-top: 0;
+  /*width: 90%;*/
+  float: left;
+}
+
+#ellipsis {
+  letter-spacing: 1.5em;
+}
+
+.caption {
+  clear: left;
+  text-align: center;
+  font-size: .7em;
+  font-weight: lighter;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  color: grey;
+}
+
+main {
+  padding-left: 10em;
+  padding-right: 10em;
+  padding-top: 5em;
+  font-size: 1.3em;
+}
+
+article {
+  clear: left;
+}
+
+article h1 {
+  display: block;
+}
+
+article h2, h3 {
+  padding-top: 2em;
+  padding-bottom: 0;
+  clear: left;
+}
+
+
+article p {
+  padding-top: 1em;
+}
+
+.profile {
+  display: block;
+}
+
+
+.profilepic {
+  float: left;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 0;
+}
+
+.profiletext {
+  float: left;
+  padding: 3em 0;
+}
+
+.profiletext p {
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: .7em;
+  color: #888;
+  line-height: 1.5em;
+}
+
+#name {
+  color: #000;
+  font-size: .8em;
+  display: inline;
+}
+
+#pic {
+  font-size: 5em;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+
+#follow {
+  display: inline;
+  color: limegreen;
+  margin-left: 1em;
+  padding: 0 .8em;
+  border: 1px solid limegreen;
+  border-radius: 15px;
+}
+
+#follow:hover {
+  color:white;
+  background-color: limegreen;
+}

@@ -1,0 +1,71 @@
+<!-- python3 -m http.server 8000 # command to open local webserver -->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Page Title</title>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <style>
+      header {
+        display: flex;
+        flex-flow: row nowrap;
+        background-color: grey;
+        flex-grow: 1
+      }
+      .columns {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        align-content: flex-end;
+        /*flex-wrap: wrap;*/
+        /*justify-content: center;*/
+        flex-grow: 1;
+        flex: auto;
+
+        /*margin: 20px;*/
+      }
+      .columns > div {
+        /*margin: 20px;*/
+      }
+      .col1 {
+        background-color: red;
+        width: 300px;
+        min-height: 80vh;
+        /*height: 100%;*/
+        /*align-self: center;*/
+        /*height: 96px;*/
+        /*flex-grow: 1;*/
+      }
+      .col2 {
+        background-color: blue;
+        /*height: 96px;*/
+        flex-grow: 1;
+      }
+      footer {
+        /*position: absolute;
+        bottom: 0;*/
+        background-color: green;
+        /*height: 10%;*/
+        display:flex;
+        flex-flow: row nowrap;
+        flex-grow: 1;
+        align-items: stretch;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>Flexbox!</h1></header>
+    <div class='columns'>
+      <div class='col1'>1</div>
+      <div class='col2'>2</div>
+      <!-- <div class='col2'>2</div>
+      <div class='col3'>3</div>
+      <div class='col1'>1</div>
+      <div class='col2'>2</div>
+      <div class='col3'>3</div> -->
+    </div>
+    <footer>Footer.</footer>
+  </body>
+</html>
