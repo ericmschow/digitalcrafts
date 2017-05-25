@@ -10,14 +10,14 @@ body {
   background: url("images/background2.jpeg");
   background-color: black;
   background-position: center;
-  background-size: 110%;
+  background-size: 150%;
   background-repeat: no-repeat;
 }
 
 h1 {
   color: white;
   margin-left: 2em;
-  margin-top: 3em;
+  margin-top: 2em;
   letter-spacing: .2em;
   font-size: 2.5em;
   text-decoration: underline;
@@ -31,10 +31,11 @@ h1 {
 
 .littler {
   font-size: .6em;
+  text-decoration: none !important;
 }
 
 #table {
-  margin: 8em 4em 2em 4em;
+  margin: 4em 4em 2em 4em;
   background: #e1b876; /* Old Browsers */
   background: -webkit-radial-gradient(top right,#e1b876,#eeeeee); /*Safari 5.1-6*/
   background: -o-radial-gradient(top right,#e1b876,#eeeeee); /*Opera 11.1-12*/
@@ -43,6 +44,7 @@ h1 {
   border-radius: 10px;
   border: 3px solid black;
   box-shadow: 8px 8px 8px 5px rgba(0, 0, 0, 0.5);
+  min-width: 700px;
 }
 
 #radios {
@@ -61,16 +63,19 @@ label {
 
 .hand {
   background: #000; /* Old Browsers */
-  background: -webkit-radial-gradient(center,#333,#000); /*Safari 5.1-6*/
-  background: -o-radial-gradient(center,#333,#000); /*Opera 11.1-12*/
-  background: -moz-radial-gradient(center,#333,#000); /*Fx 3.6-15*/
-  background: radial-gradient(ellipse at center, #333, #000); /*Standard*/
-  height: 70px;
+  background: -webkit-radial-gradient(center,#333,#111); /*Safari 5.1-6*/
+  background: -o-radial-gradient(center,#333,#111); /*Opera 11.1-12*/
+  background: -moz-radial-gradient(center,#333,#111); /*Fx 3.6-15*/
+  background: radial-gradient(ellipse at center, #333, #111); /*Standard*/
+  height: 150px;
   padding: 3px;
+  text-align: center;
 }
 
 .hand > img {
-  padding: 0 3px;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
 .buttons {
@@ -84,12 +89,12 @@ label {
   border-radius: 10px;
   border: 2px solid black;
   background-color: #E1B876;
-  color: #fff;
+  color: #000;
   letter-spacing: .05em;
 }
 
 .buttons > button:hover {
-  color: #fff;
+  background-color: #fec;
 }
 .buttons > button:active {
   color:#afa;
@@ -97,6 +102,11 @@ label {
 
 .hidden {
   display:none !important;
+}
+
+.buttons p {
+  position: absolute;
+  left: 75px;
 }
 
 .blurry {
@@ -114,4 +124,13 @@ label {
 
 #replay {
   z-index: 100;
+}
+
+footer {
+  text-align: center;
+}
+
+footer a {
+  color: black;
+  font-size: 1em;
 }
