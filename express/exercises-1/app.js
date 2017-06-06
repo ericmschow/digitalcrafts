@@ -21,9 +21,15 @@ app.get('/cats_and_dogs', function(request, response) {
   response.send('Living together')
 });
 
-app.get('/greet', function(request, response) {
-  let name = request.query.name || 'world';
-  response.send("Hello, " + name);
+app.get('/greet/:name', function(request, response) {
+  let name = request.params.name;
+  let year = request.query.year;
+  let age = (2017 - year);
+  context = {
+    name: name,
+    age: age
+  }
+  response.render('greet.hbs', context);
 })
 
 app.get('/age/:year', function(request, response) {
