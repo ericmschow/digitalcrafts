@@ -22,8 +22,14 @@ app.get('/cats_and_dogs', function(request, response) {
 });
 
 app.get('/greet', function(request, response) {
-  var name = request.query.name || 'world';
+  let name = request.query.name || 'world';
   response.send("Hello, " + name);
+})
+
+app.get('/age/:year', function(request, response) {
+  let year = request.params.year;
+  let age = (2017 - year);
+  response.send('You are roughly ' + age + ' years old.')
 })
 
 app.listen(8000, function(request, response) {
