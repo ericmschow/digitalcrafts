@@ -21,6 +21,11 @@ app.get('/cats_and_dogs', function(request, response) {
   response.send('Living together')
 });
 
+app.get('/greet', function(request, response) {
+  var name = request.query.name || 'world';
+  response.send("Hello, " + name);
+})
+
 app.listen(8000, function(request, response) {
   console.log('Listening on port 8000')
 });
