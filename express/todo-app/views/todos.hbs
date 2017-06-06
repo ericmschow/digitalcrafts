@@ -1,0 +1,13 @@
+<ul>
+  {{#each results}}
+  {{#if done}}
+    <span class="struck">
+  {{/if}}
+  <li>
+    {{id}}: {{description}}
+  </li>
+  {{#if done}}
+    </span>
+  {{/if}}
+  {{/each}}
+</ul>
