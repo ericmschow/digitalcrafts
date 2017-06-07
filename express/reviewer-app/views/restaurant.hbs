@@ -1,6 +1,15 @@
 <div id='searchbox'>
   <p>Style of food: {{results.category}}</p>
   <p>Distance from HQ: {{results.distance}} </p>
+  <p>Reviews:</p>
+  <ul>
+    {{#each reviews}}
+    <li>
+      {{review}} -
+      {{stars}} stars!
+      By {{name}}
+    </li>
+    {{/each}}
   </ul>
   <a href='/'>Back to search</a>
 </div>

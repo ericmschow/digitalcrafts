@@ -35,11 +35,13 @@ app.get('/restaurant/:id', function(request, response, next){
   let query = "SELECT * FROM restaurant WHERE id = $1";
   db.one(query, id)
     .then(function(resultsArray){
-      console.log(resultsArray)
-      console.log(resultsArray.distance)
-      console.log(resultsArray.name)
-      context = {title: resultsArray.name, results: resultsArray};
-      response.render('restaurant.hbs', context);
+      let query = "SELECT * FROM review INNER JOIN reviewer ON review.reviewer_id = reviewer.id WHERE review.restaurant_id = $1"
+      db.any(query, id)
+      .then(function(reviewsArray){
+        console.log(reviewsArray)
+        context = {title: resultsArray.name, results: resultsArray, reviews: reviewsArray};
+        response.render('restaurant.hbs', context);
+      })
     })
     .catch(function(err){
       next('Sorry, an error occurred: \n' + err);
