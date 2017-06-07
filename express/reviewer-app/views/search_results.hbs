@@ -1,8 +1,9 @@
 <div id='searchbox'>
+  <p>Click any restaurant name to see more information!</p>
   <ul>
     {{#each results}}
     <li>
-      {{id}}: {{name}}, {{category}} style of food
+      {{id}}: <a href='/restaurant/{{id}}'>{{name}}</a>, {{category}} style of food
     </li>
     {{/each}}
   </ul>

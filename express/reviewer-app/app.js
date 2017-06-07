@@ -30,8 +30,15 @@ app.get('/search', function( request, response) {
     .catch(function(err){console.error(err), response.send('Something went wrong!')})
 })
 
-// app.get('/search_results', function(request, response){
-//   console.log(search)
-//   context = {title: 'Search Results'};
-//   response.render('search_results.hbs', context)
-// })
+app.get('/restaurant/:id', function(request, response){
+  let id = request.params.id;
+  let query = "SELECT * FROM restaurant WHERE id = $1";
+  db.one(query, id)
+    .then(function(resultsArray){
+      console.log(resultsArray)
+      console.log(resultsArray.distance)
+      console.log(resultsArray.name)
+      context = {title: resultsArray.name, results: resultsArray};
+      response.render('restaurant.hbs', context);
+    })
+})
