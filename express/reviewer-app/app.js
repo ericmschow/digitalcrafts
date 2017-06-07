@@ -36,8 +36,22 @@ app.get('/restaurant/:id', function(request, response, next){
   var query2 = db.any("SELECT * FROM review INNER JOIN reviewer ON review.reviewer_id = reviewer.id WHERE review.restaurant_id = $1", id);
   return Promise.all([query1, query2])
     .then(function(arrays){
-      context = {title: arrays[0].name, results: arrays[0], reviews: arrays[1]};
+      context = {title: arrays[0].name || 'no_title', results: arrays[0] || "No results found", reviews: arrays[1]};
       response.render('restaurant.hbs', context);
+    })
+    .catch(function(err){
+      next('Sorry, an error occurred: \n' + err);
+    })
+})
+
+app.post('/restaurant/:id', function(request, response, next){
+  let restaurant_id = request.params.id;
+  let review = request.body.review;
+  let title = request.body.title;
+  let stars = request.body.stars;
+  db.any("INSERT INTO review VALUES (DEFAULT, $1, $2, $3, 4, $4);", [title, review, stars, restaurant_id])
+    .then(function(){
+      response.redirect('/restaurant/' + restaurant_id);
     })
     .catch(function(err){
       next('Sorry, an error occurred: \n' + err);

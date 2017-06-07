@@ -1,13 +1,52 @@
-#searchbox, h1 {
+* {
+  font-family: Helvetica, sans-serif;
+}
+
+body {
+  background-color: grey;
+}
+
+.box, h1 {
   margin: auto;
   margin-top: 2em;
   width: 40%;
   text-align: center;
 }
 
-#searchbox {
+form {
+  text-align: left;
+  padding-left: 3em;
+}
+label {
+  font-size: .8em;
+  /*margin-left: 3em;*/
+  color: #777;
+}
+.radio {
+  color: black;
+}
+.small {
+  margin-left: 3em;
+  font-size: .7em;
+}
+
+.centered {
+  text-align: center;
+  margin: auto;
+}
+
+.box {
+  background-color: white;
   padding: 1em;
   border: 1px solid black;
   /*border-top: none;*/
   border-radius: 5px;
+}
+
+#desc {
+  font-family: cursive;
+}
+
+li {
+  line-height: 1.4em;
 }
