@@ -1,3 +1,13 @@
-body {
-  color: red;
+#searchbox, h1 {
+  margin: auto;
+  margin-top: 2em;
+  width: 40%;
+  text-align: center;
+}
+
+#searchbox {
+  padding: 1em;
+  border: 1px solid black;
+  /*border-top: none;*/
+  border-radius: 5px;
 }
