@@ -29,9 +29,13 @@ app.get('/search', function( request, response) {
     })
     .catch(function(err){console.error(err), response.send('Something went wrong!')})
 })
+app.get('/restaurant/new', function(request, response) {
+  response.render('new_restaurant.hbs', {title: 'Add a New Restaurant'})
+})
 
 app.get('/restaurant/:id', function(request, response, next){
   let id = request.params.id;
+  if (id !== 'new') {
   var query1 = db.one("SELECT * FROM restaurant WHERE id = $1", id);
   var query2 = db.any("SELECT * FROM review INNER JOIN reviewer ON review.reviewer_id = reviewer.id WHERE review.restaurant_id = $1", id);
   return Promise.all([query1, query2])
@@ -42,8 +46,27 @@ app.get('/restaurant/:id', function(request, response, next){
     .catch(function(err){
       next('Sorry, an error occurred: \n' + err);
     })
+  }
 })
 
+// posting new restaurant
+app.post('/restaurant/submit_new', function(request, response, next) {
+  let name=request.body.name;
+  let distance = request.body.distance;
+  let category = request.body.category;
+  let favorite_dish = request.body.favorite_dish;
+  let does_takeout = request.body.does_takeout;
+  let last_ate = request.body.last_ate;
+  db.one('INSERT INTO restaurant VALUES (DEFAULT, $1, $2, NULL, $3, $4, $5, $6) RETURNING restaurant.id',
+   [name, distance, category, favorite_dish, does_takeout, last_ate])
+    .then(function(restaurant){
+      console.log(restaurant.id)
+      response.redirect('/restaurant/'+restaurant.id)
+    })
+})
+
+
+// posting new review
 app.post('/restaurant/:id', function(request, response, next){
   let restaurant_id = request.params.id;
   let review = request.body.review;

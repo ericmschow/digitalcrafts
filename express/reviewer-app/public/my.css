@@ -26,13 +26,25 @@ label {
   color: black;
 }
 .small {
-  margin-left: 3em;
   font-size: .7em;
+}
+
+.shoved {
+  margin-left: 3em;
 }
 
 .centered {
   text-align: center;
   margin: auto;
+}
+
+button {
+  padding: .2em;
+}
+
+form > button {
+  margin: auto;
+  text-align: center;
 }
 
 .box {

@@ -1,8 +1,13 @@
 <div class='box'>
-  <form action="/search" method="GET">
+  <form action="/search" method="GET" class='centered'>
     <label>Search</label>
     <input type="text" name="searchTerm">
-    <br><br>
     <button type="submit">Search</button>
+  </form>
+  <br>
+  <hr>
+  <p class='small'>Add a new restaurant:</p>
+  <form action='/restaurant/new' method="GET" class='centered'>
+    <button type="submit">Click here</button>
   </form>
 </div>
