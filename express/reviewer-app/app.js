@@ -32,16 +32,12 @@ app.get('/search', function( request, response) {
 
 app.get('/restaurant/:id', function(request, response, next){
   let id = request.params.id;
-  let query = "SELECT * FROM restaurant WHERE id = $1";
-  db.one(query, id)
-    .then(function(resultsArray){
-      let query = "SELECT * FROM review INNER JOIN reviewer ON review.reviewer_id = reviewer.id WHERE review.restaurant_id = $1"
-      db.any(query, id)
-      .then(function(reviewsArray){
-        console.log(reviewsArray)
-        context = {title: resultsArray.name, results: resultsArray, reviews: reviewsArray};
-        response.render('restaurant.hbs', context);
-      })
+  var query1 = db.one("SELECT * FROM restaurant WHERE id = $1", id);
+  var query2 = db.any("SELECT * FROM review INNER JOIN reviewer ON review.reviewer_id = reviewer.id WHERE review.restaurant_id = $1", id);
+  return Promise.all([query1, query2])
+    .then(function(arrays){
+      context = {title: arrays[0].name, results: arrays[0], reviews: arrays[1]};
+      response.render('restaurant.hbs', context);
     })
     .catch(function(err){
       next('Sorry, an error occurred: \n' + err);
