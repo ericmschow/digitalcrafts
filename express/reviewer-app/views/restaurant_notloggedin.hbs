@@ -1,0 +1,17 @@
+<div class='box'>
+  <h3><i>A {{results.category}} restaurant.</i></h3>
+  <p id='desc'>Distance from HQ: {{results.distance}} miles.</p>
+  <hr>
+  <p><b>Reviews:</b></p>
+  <ul>
+    {{#each reviews}}
+    <li>
+      {{name}} says: "{{review}} - {{stars}} stars!"
+    </li>
+    {{/each}}
+  </ul>
+  <a href='/'>Back to search</a>
+  <br>
+  <hr>
+  <p><a href='/login'>Log in</a> to add your own review!</p>
+</div>

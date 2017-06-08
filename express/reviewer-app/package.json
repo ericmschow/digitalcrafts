@@ -11,8 +11,12 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
+    "crypto": "0.0.3",
     "express": "^4.15.3",
+    "express-session": "^1.15.3",
     "hbs": "^4.0.1",
+    "morgan": "^1.8.2",
+    "pbkdf2": "^3.0.12",
     "pg-promise": "^5.9.0"
   },
   "devDependencies": {
