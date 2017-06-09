@@ -1,0 +1,34 @@
+<div id='chat-container'>
+  <label>Type here:</label>
+  <input id="message" onkeypress="send_message(event)">
+  <hr>
+  <pre id="chat-box"></pre>
+</div>
+<script src='/socket.io/socket.io.js'></script>
+<script>
+  var server = io();
+
+  server.on('connect', function(s) {
+    console.log('connected');
+
+    var url = new URL(location.href);
+    room = url.searchParams.get('room') || 'main-room';
+    server.emit('join-room', room);
+  });
+
+  server.on('chat-msg', function(msg){
+    var chat = document.getElementById('chat-box');
+    chat.insertAdjacentHTML('beforeend', '\n' + msg);
+  });
+
+  function send_message(event) {
+    var char = event.which || event.keyCode;
+    if (char == '13') {
+      var msg = document.getElementById('message');
+      //server.emit('incoming', msg.value);
+      server.emit('incoming', {room: room, msg: msg.value})
+      msg.value = '';
+    }
+  }
+
+</script>
