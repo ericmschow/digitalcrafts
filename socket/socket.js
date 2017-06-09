@@ -16,8 +16,8 @@ app.get('/', function(request, response) {
 
 // websocket block
 io.on('connection', function(client){
-  console.log('Connection established');
-
+  console.log('Connection established with ', client.id);
+  client.send(client.id);
   client.on('disconnect', function() {
     console.log('Connection broken; client disconnected.')
   });
@@ -29,10 +29,11 @@ io.on('connection', function(client){
   client.on('join-room', function(room){
     client.join(room, function() {
       console.log(client.rooms);
-      io.to(room).emit('chat-msg', '**new user joined**');
+      let msg = {msg: '**new user joined**', user: 'SERVER'}
+      io.to(room).emit('chat-msg', msg);
     });
     client.on('incoming', function(msg){
-      io.to(msg.room).emit('chat-msg', msg.msg);
+      io.to(msg.room).emit('chat-msg', msg);
     });
   });
 });

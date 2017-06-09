@@ -1,16 +1,22 @@
 <div id='chat-container'>
+  <div id='message-container'>
+    <ul id="chat-box">
+    </ul>
+  </div>
+    <hr>
   <label>Type here:</label>
+  <div id='send-button' onclick="send_message(event)">Send</div>
   <input id="message" onkeypress="send_message(event)">
-  <hr>
-  <pre id="chat-box"></pre>
 </div>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
 <script src='/socket.io/socket.io.js'></script>
 <script>
   var server = io();
-
+  var username = 'default';
   server.on('connect', function(s) {
     console.log('connected');
-
+    username = 'Anon_'+(server.id)[0]+(server.id)[1]+(server.id)[2]
+    //console.log(username)
     var url = new URL(location.href);
     room = url.searchParams.get('room') || 'main-room';
     server.emit('join-room', room);
@@ -18,17 +24,39 @@
 
   server.on('chat-msg', function(msg){
     var chat = document.getElementById('chat-box');
-    chat.insertAdjacentHTML('beforeend', '\n' + msg);
+    //chat.insertAdjacentHTML('beforeend', '\n' + msg);
+    //console.log(msg);
+    //chat.appendChild(msg.toString());
+    var line = $('<li><span class="username">' + msg.user + ': </span>' + msg.msg + '</li>').hide()
+    $('#chat-box').append(line);
+    line.show('fast');
+    if ($('#chat-box li').length > 35){
+      var old = $('#chat-box li:first')
+      old.hide('fast');
+      old.remove();
+    }
   });
 
+  function change_username(event){
+    var new_username = document.getElementById('nickfield');
+    let old_username = username
+    server.emit('nick_change', {old: old_username, new: new_username})
+  }
+
   function send_message(event) {
+    //console.log(document.cookie)
     var char = event.which || event.keyCode;
-    if (char == '13') {
+    if (char == '13' || event.type == 'click') {
       var msg = document.getElementById('message');
       //server.emit('incoming', msg.value);
-      server.emit('incoming', {room: room, msg: msg.value})
+      server.emit('incoming', {room: room, msg: msg.value, user: username})
       msg.value = '';
     }
   }
+
+  // $(document).ready(function() {
+  //   $("#send-button").click(send_message(event))
+  // }
+  // ))
 
 </script>

@@ -10,12 +10,35 @@ label {
   text-align: center;
 }
 
+#send-button {
+  border: 1px solid black;
+  background-color: lightblue;
+  display: inline;
+  float:right;
+  padding: 0 .2em;
+}
+
+#send-button:hover{
+  background-color: #66f;
+}
+
 #message {
   display: inline;
   width: 80%;
   /*position: absolute;
   right: 0;*/
   float: right;
+  margin-right: 3px;
+  padding-bottom: 2px;
+
+}
+
+#message, #send-button {
+  /*padding: 0 .3em;*/
+}
+
+.username {
+  color: grey;
 }
 
 #chat-container {
@@ -25,9 +48,13 @@ label {
   padding: 1em;
   border: 1px solid black;
   border-radius: 10px;
+  /*max-height: 20%;
+  overflow-y: scroll;*/
 }
 
 #chat-box {
   border: 1px solid black;
   padding: .5em;
+  list-style-type: none;
 }
+#chat-box
