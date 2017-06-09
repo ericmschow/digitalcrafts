@@ -3,10 +3,15 @@
     <ul id="chat-box">
     </ul>
   </div>
-    <hr>
-  <label>Type here:</label>
+    <!-- <hr> -->
+  <label>Your name: <span id='label_name'>default</span></label>
   <div id='send-button' onclick="send_message(event)">Send</div>
   <input id="message" onkeypress="send_message(event)">
+  <hr>
+
+  <div id="nick-button" onclick="change_username(event)">Change</div>
+  <input id="nickfield" onkeypress="change_username(event)" maxlength="12">
+  <label id="nick-label">Change username:</label>
 </div>
 <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
 <script src='/socket.io/socket.io.js'></script>
@@ -16,10 +21,11 @@
   server.on('connect', function(s) {
     console.log('connected');
     username = 'Anon_'+(server.id)[0]+(server.id)[1]+(server.id)[2]
+    document.getElementById("label_name").innerHTML = username;
     //console.log(username)
     var url = new URL(location.href);
     room = url.searchParams.get('room') || 'main-room';
-    server.emit('join-room', room);
+    server.emit('join-room', room, username);
   });
 
   server.on('chat-msg', function(msg){
@@ -35,12 +41,22 @@
       old.hide('fast');
       old.remove();
     }
+
+    server.on('nick-change-success', function(new_name){
+      username = new_name;
+      document.getElementById("label_name").innerHTML = username;
+      document.getElementById('nickfield').value = ''
+    })
   });
 
   function change_username(event){
-    var new_username = document.getElementById('nickfield');
-    let old_username = username
-    server.emit('nick_change', {old: old_username, new: new_username})
+    var char = event.which || event.keyCode;
+    if (char == '13' || event.type == 'click') {
+      var new_username = document.getElementById('nickfield').value;
+      let old_username = username
+      //console.log('Username change called')
+      server.emit('nick-change', server.id, old_username, new_username)
+    }
   }
 
   function send_message(event) {

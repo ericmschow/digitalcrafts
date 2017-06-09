@@ -10,7 +10,7 @@ label {
   text-align: center;
 }
 
-#send-button {
+#send-button, #nick-button {
   border: 1px solid black;
   background-color: lightblue;
   display: inline;
@@ -22,7 +22,7 @@ label {
   background-color: #66f;
 }
 
-#message {
+#message, #nickfield {
   display: inline;
   width: 80%;
   /*position: absolute;
@@ -32,9 +32,16 @@ label {
   padding-bottom: 2px;
 
 }
+#chat-container{
+  overflow:auto;
+}
+#nick-label {
+  float: right;
+  /*margin: 5px;*/
+}
 
-#message, #send-button {
-  /*padding: 0 .3em;*/
+#nickfield {
+  width: 200px;
 }
 
 .username {

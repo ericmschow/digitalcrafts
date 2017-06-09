@@ -14,6 +14,14 @@ app.get('/', function(request, response) {
   response.render('chat.hbs', context)
 });
 
+class Users {
+  constructor (){
+    this.names = new Object;
+  }
+}
+
+users = new Users();
+
 // websocket block
 io.on('connection', function(client){
   console.log('Connection established with ', client.id);
@@ -26,7 +34,7 @@ io.on('connection', function(client){
 //    io.emit('chat-msg', msg)
 //  })
 
-  client.on('join-room', function(room){
+  client.on('join-room', function(room, username){
     client.join(room, function() {
       console.log(client.rooms);
       let msg = {msg: '**new user joined**', user: 'SERVER'}
@@ -36,6 +44,22 @@ io.on('connection', function(client){
       io.to(msg.room).emit('chat-msg', msg);
     });
   });
+
+  client.on('nick-change', function(id, old_username, new_username){
+    console.log(id); console.log(old_username); console.log(new_username);
+    if (new_username.toLowerCase() == 'server') {
+      let msg = {msg: 'Sorry, you cannot impersonate the server.', user: 'SERVER'};
+      client.emit('chat-msg', msg);
+    }
+    else if (new_username === 'Null') { // TODO add unique user enforcement
+      let msg = {msg: 'Sorry, you must exist.', user: 'SERVER'};
+      client.emit('chat-msg', msg);
+    }
+    else {
+      users.names.id = new_username;
+      client.emit('nick-change-success', new_username)
+    }
+  })
 });
 
 http.listen(8000, function() {
