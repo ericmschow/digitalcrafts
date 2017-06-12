@@ -104,6 +104,9 @@ function draw (past, current, color_in, server_flag) {
     current[0], current[1]
   );
   ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.ellipse(past[0], past[1], size/2, size/2, 0, 0, 2*Math.PI, false);
+  ctx.fill();
   ctx.closePath();
   if (!server_flag){
     server.emit('draw-to-server', past, current, color)}
