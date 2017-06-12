@@ -1,0 +1,30 @@
+<div class='row'>
+  <div class='col-xs-1'></div> <!-- blankspace -->
+  <div id='canvas-container' class='col-xs-6'>
+    <canvas></canvas>
+  </div>
+
+  <div id='chat-container' class='col-xs-4'>
+    <div id='message-container'>
+      <ul id="chat-box">
+      </ul>
+    </div>
+      <!-- <hr> -->
+    <label>Your name: <span id='label_name'>default</span></label>
+    <div id='send-button' onclick="send_message(event)">Send</div>
+    <input id="message" onkeypress="send_message(event)">
+    <hr>
+    <div id='nick-container'>
+      <div id="nick-button" onclick="change_username(event)">Change</div>
+      <input id="nickfield" onkeypress="change_username(event)" maxlength="12">
+      <label id="nick-label">Change username:</label>
+    </div>
+    <div id="online-users-container">
+      <p>Online users:</p>
+      <ul id='online-users'>
+        <li>test</li>
+      </ul>
+    </div>
+  </div>
+  <div class='col-xs-1'></div> <!-- blankspace -->
+</div>

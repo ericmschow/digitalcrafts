@@ -1,0 +1,105 @@
+body {
+  background-color: grey;
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+}
+
+label {
+  text-align: center;
+}
+
+canvas {
+  background-color: white;
+  margin: auto;
+  /*padding: 1em;*/
+  border: 5px solid black;
+  border-radius: 10px;
+  /*max-width: 100%;
+  max-height: 100%;
+  min-width: 40%;
+  min-height: 40%;*/
+  height: 90vh;
+  width: 85vh;
+}
+
+#send-button, #nick-button {
+  border: 1px solid black;
+  background-color: lightblue;
+  display: inline;
+  float:right;
+  padding: 0 .2em;
+}
+
+#send-button:hover, #nick-button:hover{
+  background-color: #66f;
+}
+
+#message, #nickfield {
+  display: inline;
+  /*position: absolute;
+  right: 0;*/
+  float: right;
+  margin-right: 3px;
+  padding-bottom: 2px;
+
+}
+#chat-container{
+  overflow:auto;
+  max-height: 90vh;
+}
+#nick-label {
+  float: right;
+  /*margin: 5px;*/
+}
+
+#online-users-container {
+  float:right;
+  width: 50%;
+
+}
+
+#online-users-container > p{
+  margin: 0;
+  /*line-height: 0*/
+}
+
+#nick-container {
+  float:right;
+  width:50%;
+
+}
+
+#message {
+  /*width: 80%;*/
+  max-width: 80%;
+  min-width: 20%;
+}
+
+#nickfield {
+  width: 200px;
+}
+
+.username {
+  color: grey;
+}
+
+#chat-container {
+  background-color: white;
+  margin: auto;
+  /*width: 80vw;*/
+  padding: 1em;
+  border: 1px solid black;
+  border-radius: 10px;
+  /*max-height: 20%;
+  overflow-y: scroll;*/
+}
+
+#chat-box {
+  border: 1px solid black;
+  padding: .5em;
+  list-style-type: none;
+}
+#chat-box

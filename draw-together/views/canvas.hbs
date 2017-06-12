@@ -1,0 +1,19 @@
+
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src='/socket.io/socket.io.js'></script>
+
+<script>
+
+var server = io();
+var username = 'default';
+server.on('connect', function(s, list) {
+  console.log('connected');
+
+  //update_online_users(list);
+
+});
+
+var canvas = document.querySelector('canvas');
+var ctx = canvas.getContext('2d');
+
+</script>
