@@ -1,29 +1,52 @@
 <div class='row'>
+  <hr>
   <div class='col-xs-1'></div> <!-- blankspace -->
   <div id='canvas-container' class='col-xs-6'>
     <canvas></canvas>
   </div>
 
-  <div id='chat-container' class='col-xs-4'>
-    <div id='message-container'>
-      <ul id="chat-box">
-      </ul>
+  <div class='col-xs-4'>
+    <div id='chat-container'>
+      <div id='message-container'>
+        <ul id="chat-box">
+        </ul>
+      </div>
+        <!-- <hr> -->
+      <div id='send-button' onclick="send_message(event)">Send</div>
+      <input id="message" onkeypress="send_message(event)">
+      <hr>
+      <div id='nick-container'>
+
+      </div>
+      <div id="online-users-container">
+        <p>Online users:</p>
+        <ul id='online-users'>
+          <li>test</li>
+        </ul>
+      </div>
     </div>
-      <!-- <hr> -->
-    <label>Your name: <span id='label_name'>default</span></label>
-    <div id='send-button' onclick="send_message(event)">Send</div>
-    <input id="message" onkeypress="send_message(event)">
-    <hr>
-    <div id='nick-container'>
+    <div id='options-container'>
+      <label>Your name: <span id='label_name'>default</span></label>
       <div id="nick-button" onclick="change_username(event)">Change</div>
-      <input id="nickfield" onkeypress="change_username(event)" maxlength="12">
-      <label id="nick-label">Change username:</label>
-    </div>
-    <div id="online-users-container">
-      <p>Online users:</p>
-      <ul id='online-users'>
-        <li>test</li>
-      </ul>
+      <input id="nickfield" class='' onkeypress="change_username(event)" maxlength="12">
+      <hr>
+      <label id="nick-label" class=''>Change username:</label>
+      <label>Select a color:</label>
+      <input type='color' value='#0000ff' onchange='change_color(this.value)'>
+      <hr>
+      <label>Pen size:</label>
+
+      <label>1</label>
+      <input type='radio' class='penradio' name='size' value='1' onfocus="change_size(this.value)">
+      <label>2</label>
+      <input type='radio' class='penradio' name='size' value='2' onfocus="change_size(this.value)">
+      <label>3</label>
+      <input type='radio' class='penradio' name='size' value='3' checked="true" onfocus="change_size(this.value)">
+      <label>4</label>
+      <input type='radio' class='penradio' name='size' value='4' onfocus="change_size(this.value)">
+      <label>5</label>
+      <input type='radio' class='penradio' name='size' value='5' onfocus="change_size(this.value)">
+
     </div>
   </div>
   <div class='col-xs-1'></div> <!-- blankspace -->

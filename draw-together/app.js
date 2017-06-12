@@ -52,7 +52,11 @@ io.on('connection', function(client){
       let msg = {msg: 'Sorry, you cannot impersonate the server.', user: 'SERVER'};
       client.emit('chat-msg', msg);
     }
-    else if (new_username === 'Null') { // TODO add unique user enforcement
+    else if (new_username.replace(/\s+/g, '') === ''){
+      let msg = {msg: 'Sorry, you must enter a name.', user: 'SERVER'};
+      client.emit('chat-msg', msg);
+    }
+    else if (new_username.replace(/\s+/g, '') === 'Null') { // TODO add unique user enforcement
       let msg = {msg: 'Sorry, you must exist.', user: 'SERVER'};
       client.emit('chat-msg', msg);
     }

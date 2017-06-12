@@ -27,6 +27,7 @@ server.on('chat-msg', function(msg){
     old.hide('fast');
     old.remove();
   }
+  $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
 });
 
 server.on('nick-change-success', function(new_name, list){
@@ -81,10 +82,21 @@ var canvasjq;
 var ctx;
 var past;
 var current;
-var color = 'black';
+var color = 'blue';
+var size = 9
+
+function change_color(input){
+  color = input;
+};
+
+function change_size(input){
+  size = 3 * input
+}
 
 function draw (past, current, color_in, server_flag) {
   color = color_in // for later color options
+  ctx.lineWidth=size;
+  ctx.beginPath();
   ctx.moveTo(past[0], past[1]);
   ctx.strokeStyle = color;
   ctx.quadraticCurveTo(

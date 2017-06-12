@@ -1,6 +1,7 @@
 body {
   background-color: grey;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -21,8 +22,10 @@ canvas {
   max-height: 100%;
   min-width: 40%;
   min-height: 40%;*/
-  height: 90vh;
-  width: 85vh;
+  height: 80vh;
+  width: 80vw;
+  max-width: 100%;
+  max-height: 100vw;
 }
 
 #send-button, #nick-button {
@@ -46,10 +49,7 @@ canvas {
   padding-bottom: 2px;
 
 }
-#chat-container{
-  overflow:auto;
-  max-height: 90vh;
-}
+
 #nick-label {
   float: right;
   /*margin: 5px;*/
@@ -58,10 +58,10 @@ canvas {
 #online-users-container {
   float:right;
   width: 50%;
-
+  display: none;
 }
 
-#online-users-container > p{
+#online-users-container > p {
   margin: 0;
   /*line-height: 0*/
 }
@@ -86,20 +86,37 @@ canvas {
   color: grey;
 }
 
-#chat-container {
+#chat-container, #options-container {
   background-color: white;
   margin: auto;
   /*width: 80vw;*/
   padding: 1em;
-  border: 1px solid black;
+  border: 5px solid black;
   border-radius: 10px;
   /*max-height: 20%;
   overflow-y: scroll;*/
+  overflow:hidden;
+  height: 40vh;
+}
+#chat-container {
+  /*margin-bottom: 3px;*/
+  border-bottom: 2px solid black;
+}
+
+#options-container {
+  /*margin-top: 3px;
+  margin-bottom: -6px;*/
+  border-top: 2px solid black;
 }
 
 #chat-box {
   border: 1px solid black;
   padding: .5em;
   list-style-type: none;
+  overflow-y: scroll;
+  height: 20vh;
 }
-#chat-box
+
+.penradio {
+  margin-right: 1em !important;
+}
