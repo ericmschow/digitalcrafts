@@ -78,6 +78,11 @@ server.on('draw-to-client', function(past, current, color){
   draw(past, current, color, server_flag)
 });
 
+server.on('draw-to-client-touch', function(current, color){
+  server_flag = true;
+  draw_touch(current, color, server_flag)
+});
+
 // CHAT FUNCTIONS
 
 function change_username(event){
@@ -119,6 +124,7 @@ var canvasjq;
 var ctx;
 var past;
 var current;
+var touched_points = new Array;
 var color = 'blue';
 var size = 9 //default button 3 * 3 since function change_size is not called yet
 
@@ -152,19 +158,48 @@ function draw (past, current, color_in, server_flag) {
     server.emit('draw-to-server', room, past, current, color)}
 };
 
+function draw_touch (current, color_in, server_flag) {
+  color = color_in;
+  ctx.beginPath();
+  ctx.fillStyle = color;
+  console.log(touched_points)
+  point = touched_points.shift();
+  point2 = touched_points[0];
+  console.log(point, point2)
+  ctx.ellipse(current[0], current[1], size/2, size/2, 0, 0, 2*Math.PI, false);
+  ctx.fill();
+  ctx.lineWidth=size;
+  ctx.beginPath();
+  ctx.moveTo(point[0], point[1]);
+  ctx.strokeStyle = color;
+  ctx.quadraticCurveTo(
+    point[0], point[1],
+    point2[0], point2[1]
+  );
+  ctx.stroke();
+  ctx.closePath();
+  // line = new Phaser.Line(past[0], past[1], current[0], current[1])
+
+  if (!server_flag){
+    server.emit('draw-to-server-touch', room, current, color)}
+};
+
 $(document).ready(function(){
   canvas = document.querySelector('canvas');
   canvasjq = $('canvas');
   ctx = canvas.getContext('2d');
   mouse_down = false;
 
+  var rect = canvas.getBoundingClientRect();
 
 
-  // var h = canvasjq.height();
-  // var w = canvasjq.width();
-  //
-  // canvasjq.attr('height', h);
-  // canvasjq.attr('width', w);
+
+
+  var h = canvasjq.height();
+  var w = canvasjq.width();
+
+  canvasjq.attr('height', h);
+  canvasjq.attr('width', w);
 
 
 
@@ -172,18 +207,19 @@ $(document).ready(function(){
     mouse_down = true;
   });
 
-  canvas.addEventListener('touchdown', function(event){
-    mouse_down = true;
+  canvas.addEventListener('touchstart', function(event){
+    current = [(event.touches[0].clientX - rect.left), (event.touches[0].clientY - rect.top)];
+    touched_points.push(current)
   })
 
   canvas.addEventListener('mouseup', function(event){
     mouse_down = false;
-    past = null;
+    past = [];
   });
 
-  canvas.addEventListener('touchup', function(event){
-    mouse_down = false;
-    past = null;
+  canvas.addEventListener('touchend', function(event){
+    touched_points = []
+
   });
 
   canvas.addEventListener('mousemove', function(event){
@@ -197,16 +233,11 @@ $(document).ready(function(){
       past = [event.offsetX, event.offsetY];
     }
   });
-  canvas.addEventListener('touchmove', function(event){
-    if (mouse_down) {
-    //  console.log(event.offsetX, event.offsetY, event);
-      current = [event.offsetX, event.offsetY];
-      if (past) {
-        server_flag = false;
-        draw(past, current, color);
-      }
-      past = [event.offsetX, event.offsetY];
-    }
-  });
 
+  canvas.addEventListener('touchmove', function(event){
+    current = [(event.touches[0].clientX - rect.left), (event.touches[0].clientY - rect.top)];
+    server_flag = false;
+    touched_points.push(current)
+    draw_touch(current, color);
+  });
 });

@@ -73,6 +73,10 @@ io.on('connection', function(client){
   client.on('draw-to-server', function(room, past, current, color){
     client.broadcast.emit('draw-to-client', past, current, color)
   })
+
+  client.on('draw-to-server-touch', function(room, current, color){
+    client.broadcast.emit('draw-to-client-touch', current, color)
+  })
 });
 
 http.listen(8000, function() {
