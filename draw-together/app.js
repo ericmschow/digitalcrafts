@@ -27,12 +27,14 @@ io.on('connection', function(client){
   console.log('Connection established with ', client.id);
   //client.send(client.id);
   client.on('disconnect', function() {
-    console.log('Connection broken; client disconnected.')
+    console.log('Connection broken; client disconnected.', client.room)
+    let msg = {msg: '**new user '+ users.names.id +' left the room**', user: 'SERVER'}
+    io.to(client.room).emit('chat-msg', msg);
   });
 
-//  client.on('incoming', function(msg) {
-//    io.emit('chat-msg', msg)
-//  })
+ // client.on('incoming', function(msg) {
+ //   io.emit('chat-msg', msg)
+ // })
 
   client.on('join-room', function(room, username){
     client.join(room, function() {
@@ -68,8 +70,8 @@ io.on('connection', function(client){
     }
   })
 
-  client.on('draw-to-server', function(past, current, color){
-    io.emit('draw-to-client', past, current, color)
+  client.on('draw-to-server', function(room, past, current, color){
+    client.broadcast.emit('draw-to-client', past, current, color)
   })
 });
 

@@ -1,6 +1,43 @@
 var server = io();
 var username = 'default';
 
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'canvas-container', { preload: preload, create: create, update: update, render: render });
+// game.state.add('main', mainState);
+// game.state.start('main');
+
+// var circles = []
+// function preload() {
+// }
+
+// function p(pointer) {
+//   //console.log(pointer.event);
+//   circle = new Phaser.Circle(pointer.x, pointer.y, 60)
+//   circles.push({circle: circle, color: '#00DDDD'})
+// }
+
+// function create() {
+//   game.stage.backgroundColor = '#FFFFFF';
+//
+//   // game.input.addMoveCallback(p, this);
+//
+// }
+//
+// function update() {
+// }
+//
+// function render() {
+//   if (game.input.activePointer.isDown){
+//     circle = {circle: game.input.activePointer.circle, color: color};
+//     console.log(color)
+//     circles.push(circle)
+//   }
+// y
+//
+//   circles.forEach(function(circle) {
+//     game.debug.geom(circle.circle, circle.color)
+//   })
+// };
+
 server.on('connect', function(s, list) {
   console.log('connected');
   username = 'Anon_'+(server.id)[0]+(server.id)[1]+(server.id)[2]
@@ -83,7 +120,7 @@ var ctx;
 var past;
 var current;
 var color = 'blue';
-var size = 9
+var size = 9 //default button 3 * 3 since function change_size is not called yet
 
 function change_color(input){
   color = input;
@@ -94,7 +131,7 @@ function change_size(input){
 }
 
 function draw (past, current, color_in, server_flag) {
-  color = color_in // for later color options
+  color = color_in
   ctx.lineWidth=size;
   ctx.beginPath();
   ctx.moveTo(past[0], past[1]);
@@ -106,10 +143,13 @@ function draw (past, current, color_in, server_flag) {
   ctx.stroke();
   ctx.fillStyle = color;
   ctx.ellipse(past[0], past[1], size/2, size/2, 0, 0, 2*Math.PI, false);
+  ctx.ellipse(current[0], current[1], size/2, size/2, 0, 0, 2*Math.PI, false);
   ctx.fill();
   ctx.closePath();
+  // line = new Phaser.Line(past[0], past[1], current[0], current[1])
+
   if (!server_flag){
-    server.emit('draw-to-server', past, current, color)}
+    server.emit('draw-to-server', room, past, current, color)}
 };
 
 $(document).ready(function(){
@@ -119,17 +159,29 @@ $(document).ready(function(){
   mouse_down = false;
 
 
-  var h = canvasjq.height();
-  var w = canvasjq.width();
 
-  canvasjq.attr('height', h);
-  canvasjq.attr('width', w);
+  // var h = canvasjq.height();
+  // var w = canvasjq.width();
+  //
+  // canvasjq.attr('height', h);
+  // canvasjq.attr('width', w);
+
+
 
   canvas.addEventListener('mousedown', function(event){
     mouse_down = true;
   });
 
+  canvas.addEventListener('touchdown', function(event){
+    mouse_down = true;
+  })
+
   canvas.addEventListener('mouseup', function(event){
+    mouse_down = false;
+    past = null;
+  });
+
+  canvas.addEventListener('touchup', function(event){
     mouse_down = false;
     past = null;
   });
@@ -145,6 +197,16 @@ $(document).ready(function(){
       past = [event.offsetX, event.offsetY];
     }
   });
-
+  canvas.addEventListener('touchmove', function(event){
+    if (mouse_down) {
+    //  console.log(event.offsetX, event.offsetY, event);
+      current = [event.offsetX, event.offsetY];
+      if (past) {
+        server_flag = false;
+        draw(past, current, color);
+      }
+      past = [event.offsetX, event.offsetY];
+    }
+  });
 
 });
