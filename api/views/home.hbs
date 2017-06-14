@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>API App</title>
+    <script src="/axios/axios.js"></script>
+  </head>
+  <body>
+    <h1>API App</h1>
+    <h2 id='city'></h2>
+    <h2> Current Zip Code: <span id="name">Waiting for you!</span></h2>
+    <h2 id="temp"></h2>
+    <form>
+      <input type='text' id='textfield' name='textfield'>
+      <br>
+      <input type="button" onclick="changeZip(this.form)" value='Check zip'></button>
+    </form>
+    <script>
+    var n = document.getElementById('name');
+    var t = document.getElementById('temp');
+      // var code = "77073"
+      // n.innerHTML = code;
+      // axios.get(`/api/${code}`)
+      //  .then(function (response) {
+      //    console.log(response.data);
+      //
+      //    t.innerHTML = response.data.main.temp + " degrees Fahrenheit";
+      //  });
+
+      function changeZip(form){
+        var n = document.getElementById('name');
+        var t = document.getElementById('temp');
+        var c = document.getElementById('city');
+        code = form.textfield.value;
+        var n = document.getElementById('name');
+        n.innerHTML = code;
+        axios.get(`/api/${code}`)
+         .then(function (response) {
+           console.log(response.data);
+           t.innerHTML = Math.round(response.data.main.temp) + " degrees Fahrenheit";
+           c.innerHTML = "City of " + response.data.name;
+         });
+      }
+    </script>
+  </body>
+</html>
