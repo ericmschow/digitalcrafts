@@ -5,7 +5,8 @@ import TextField from 'material-ui/TextField';
 import './ContactForm.css'
 class ContactForm extends React.Component {
   constructor(props) {
-    super();
+    super(props);
+    console.log(props);
     this.callback = props.callback
     this.state = {
       name: '',
@@ -18,6 +19,7 @@ class ContactForm extends React.Component {
     };
   };
   update_state(event, key) {
+    console.log('updated ', key)
     this.setState({[key]: event.target.value})
   }
   render() {
@@ -27,7 +29,9 @@ class ContactForm extends React.Component {
             event.preventDefault()
             console.log('submitted')
             console.log('state is :', this.state)
-            this.callback(this.state)
+            let contacts = JSON.parse(localStorage.contacts);
+            contacts.push(this.state);
+            localStorage.contacts = JSON.stringify(contacts);
             }
           }>
         <Card id='contactCard' initiallyExpanded={true}>

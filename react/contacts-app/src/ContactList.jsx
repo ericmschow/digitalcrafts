@@ -2,9 +2,9 @@ import React from 'react'
 
 class ContactList extends React.Component {
   constructor(props) {
-    super();
-    this.contacts = props.contacts;
-    console.log(this.contacts[0])
+    super(props);
+    this.contacts = JSON.parse(localStorage.contacts);
+    console.log(this.contacts)
   }
   render() {
     const contacts = this.contacts.map((p) =>
