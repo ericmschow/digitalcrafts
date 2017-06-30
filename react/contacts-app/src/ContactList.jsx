@@ -18,7 +18,7 @@ class ContactList extends React.Component {
   }
   render() {
     let contacts = []
-    if (!this.contacts){
+    if (Object.keys(this.contacts).length === 0){
       return(
         <Card>
           <CardTitle titleStyle={{textAlign: "center"}} title="You don't have any contacts!"></CardTitle>

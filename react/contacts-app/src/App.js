@@ -66,11 +66,11 @@ class App extends Component {
   }
 
   updateState (contact) {
-    let contacts = this.contacts;
+    let contacts = this.state.contacts;
     contacts[contact.email] = contact;
-    this.contacts[contact.email] = contact;
+    this.state.contacts = contacts;
+    this.setState({contacts: this.state.contacts})
     localStorage.contacts = JSON.stringify(contacts);
-
     console.log('localStorage.contacts in updateState is: ', JSON.parse(localStorage.contacts))
   }
   render() {
@@ -82,7 +82,7 @@ class App extends Component {
           <Tabs>
             <Tab label="VIEW CONTACTS" onActive={() => this.refresh()}>
               <div className='background'>
-                <ContactList contacts={this.state.contacts} callback={(contact) => this.setState({dummy:''})}/>
+                <ContactList contacts={this.state.contacts} callback={() => this.refresh()}/>
               </div>
             </Tab>
             <Tab label="ADD NEW">
