@@ -1,0 +1,20 @@
+.contact {
+  margin-bottom: 1em;
+  margin-right: 2em;
+}
+
+li {
+  list-style-type: none;
+}
+
+.delete {
+  display: inline-block;
+  position:absolute;
+  right: 1em;
+  top: 1em;
+  padding: 0;
+}
+
+Card > CardText {
+  text-align: center;
+}

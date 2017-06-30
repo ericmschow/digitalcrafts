@@ -2,19 +2,33 @@ import React, { Component } from 'react';
 import './App.css';
 import AppBar from "material-ui/AppBar";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import ContactForm from './ContactForm.jsx';
 import ContactList from './ContactList.jsx';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import {
+  blue900, cyan700, red700,
+  pinkA200,
+  grey100, grey300, grey400, grey500,
+  white, darkBlack, fullBlack,
+} from 'material-ui/styles/colors';
 import {BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom';
 
-const Home = (contacts) => (<div><h2>Your Contacts</h2> <ContactList/></div>)
+const theme = getMuiTheme({
+  palette: {
+    primary1Color: blue900,
+    backgroundColor: darkBlack
+  }
+})
+
 const NoMatch = ({ location }) => (<div><h3>Page not found: {location.pathname}</h3></div>)
 const Article = ({ match }) => <div><h3>Article Slug: {match.params.slug}</h3></div>
-const AddButton = <div>Add</div>
 
 class App extends Component {
   constructor(props) {
-    super();
+    super(props);
+    this.state = {dummy: ''};
     var frank = {
       name: 'Frank',
       email: 'frank@email.com',
@@ -24,53 +38,66 @@ class App extends Component {
       state: 'TX',
       zip: '77836',
     };
-    let contacts = [];
-    localStorage.contacts = JSON.stringify(contacts);
     // DEBUG below this line
-    console.log('local contacts is ', localStorage.contacts)
-    let newContacts = JSON.parse(localStorage.contacts);
-    newContacts.push(frank)
-    localStorage.contacts = JSON.stringify(newContacts);
-    console.log('local contacts is now ', localStorage.contacts)
+    let contacts = {}
+    try {this.state.contacts = JSON.parse(localStorage.contacts)}
+    catch (e) {
+      console.error(e)
+      this.state.contacts = contacts
+    }
 
-    // this.state.push(frank)
+    // contacts[frank.email] = frank;
+    // // console.log('contacts is ', contacts)
+    // localStorage.contacts = contacts
+    // // console.log('local contacts is ', localStorage.contacts)
+    // let newContacts = {};
+    // newContacts[frank.email] = frank;
+    // // console.log('newContacts is, ', frank)
+    // localStorage.contacts = JSON.stringify(newContacts);
+    // console.log()
+    // console.log('local contacts is now ', localStorage.contacts)
   }
   // adds to contacts list from form
-  updateState (contact) {
-    console.log(contact)
-    // this.state.push(contact)
-    let name = contact.name;
-    var new_contacts = this.state.contacts;
-    new_contacts[name] = contact;
+  refresh(){
+    console.log('refreshed');
+    this.state.contacts = JSON.parse(localStorage.contacts);
+    console.log(this.state.contacts);
+    this.setState({contacts: this.state.contacts});
+  }
 
-    this.setState({contacts: new_contacts});
-    console.log('contacts is ',this.state.contacts)
+  updateState (contact) {
+    let contacts = this.contacts;
+    contacts[contact.email] = contact;
+    this.contacts[contact.email] = contact;
+    localStorage.contacts = JSON.stringify(contacts);
+
+    console.log('localStorage.contacts in updateState is: ', JSON.parse(localStorage.contacts))
   }
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
+      <MuiThemeProvider muiTheme={theme}>
+        <BrowserRouter>
+          <div>
           <AppBar title='Contacts' />
-          <BrowserRouter>
-            <div>
-              <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/add">Add</Link></li>
-                <li><Link to="/article/frank">Article</Link></li>
-              </ul>
-              <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route path="/add" component={({history}) => (<ContactForm history={history} callback={(contact) => this.updateState(contact)}/>)}/>
-                <Redirect from="/old-form" to="/form"/>
-                <Route path="/article/:slug" component={Article}/>
-                <Route component={NoMatch}/>
-              </Switch>
-              <div id='ListContainer'>
-
+          <Tabs>
+            <Tab label="VIEW CONTACTS" onActive={() => this.refresh()}>
+              <div className='background'>
+                <ContactList contacts={this.state.contacts} callback={(contact) => this.setState({dummy:''})}/>
               </div>
-            </div>
-          </BrowserRouter>
+            </Tab>
+            <Tab label="ADD NEW">
+              <div>
+                <ContactForm contacts={this.state.contacts} callback={(contact) => this.updateState(contact)}/>
+              </div>
+            </Tab>
+          </Tabs>
+
+      {
+        //          <Route exact path="/" component={Home}/>
+        // <Route path="/delete/:id" component={(id) => <delete id={id}/>}/>
+}
         </div>
+        </BrowserRouter>
       </MuiThemeProvider>
     );
   }
