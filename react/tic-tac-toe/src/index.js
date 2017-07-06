@@ -59,16 +59,16 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
-  constructor() {
-    super();
-    let initialState = {
-      history: [{
-        squares: Array(9).fill(null)
-      }],
-      stepNumber: 0,
-      xIsNext: true,
-    };
-    this.state = (startUp(initialState.stepNumber, initialState))
+  constructor(props) {
+    super(props);
+    // let initialState = {
+    //   history: [{
+    //     squares: Array(9).fill(null)
+    //   }],
+    //   stepNumber: 0,
+    //   xIsNext: true,
+    // };
+    // this.state = (startUp(initialState.stepNumber, initialState))
   }
   // handleClick(i) {
   //   const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -114,7 +114,7 @@ class Game extends React.Component {
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+      status = 'Next player: ' + (this.props.xIsNext ? 'X' : 'O')
     }
 
     return (
@@ -123,7 +123,7 @@ class Game extends React.Component {
           <div className="game-board">
             <Board
               squares = {current.squares}
-              onClick={(i) => this.handleClick(i)}/>
+              onClick={(i) => this.props.onSubmit(this.props.stepNumber, i)}/>
           </div>
           <div className="game-info">
             <div>{status}</div>

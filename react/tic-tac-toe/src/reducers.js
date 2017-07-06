@@ -9,15 +9,17 @@ var initialState = {
 export function game (state, action) {
   switch (action.type) {
     case 'GAME_CLICK':
-      return Object.assign(
+      let newState = Object.assign(
         {},
         state,
         {[action.id]: action.data}
       );
+      console.log('newState is ', newState);
+      return newState;
     case 'JUMP_TO':
       return state // placeholder
-    case 'START_UP':
-      return state;
+    // case 'START_UP':
+    //   return state;
     default:
       return initialState;
   }
